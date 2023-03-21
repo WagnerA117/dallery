@@ -18,6 +18,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 
+const app = initializeApp(firebaseConfig);
+
 const inter = Inter({subsets: ["latin"]});
 
 export default function Home() {
