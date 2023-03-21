@@ -1,31 +1,73 @@
-import {Inter} from "next/font/google";
+"use client";
 
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import {initializeApp} from "firebase/app";
-import {getAnalytics} from "firebase/analytics";
-
-const firebaseConfig = {
-	apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-	authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-	projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-	storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-	messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-	appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-	measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-};
-
-// Initialize Firebase
-
-const app = initializeApp(firebaseConfig);
-
-const inter = Inter({subsets: ["latin"]});
+import { GithubAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, gitHubProvider } from "./firebase/clientApp";
 
 export default function Home() {
-	return (
-		<>
-			<h1> Hello there! this</h1>
-		</>
-	);
+  // User Authentication
+  const [user, loading, error] = useAuthState(auth);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  function login() {
+    signInWithPopup(auth, gitHubProvider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GithubAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+
+        console.log(user);
+        // redux action? --> dispatch({ type: SET_USER, user });
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GithubAuthProvider.credentialFromError(error);
+        // ...
+      });
+  }
+
+  function logout() {
+    signOut(auth)
+      .then(() => {
+        console.log("logged out");
+        //navigate('/');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  return (
+    <>
+      <h1>Hello there! I&apos;m so sorry</h1>
+      {user ? (
+        <div>
+          {JSON.stringify(user)} <button onClick={logout}>Logout</button>
+        </div>
+      ) : (
+        <>
+          {/*<input
+            placeholder="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />*/}
+          <button onClick={login}>Login</button>
+        </>
+      )}
+    </>
+  );
 }
