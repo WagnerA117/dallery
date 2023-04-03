@@ -1,5 +1,5 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { getAuth, GithubAuthProvider } from "firebase/auth";
+import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -12,9 +12,12 @@ const clientCredentials = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = !getApps().length ? initializeApp(clientCredentials) : getApp();
+export const app = !getApps().length
+  ? initializeApp(clientCredentials)
+  : getApp();
 
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const auth = getAuth();
 export const gitHubProvider = new GithubAuthProvider();
+export const googleAuthProvider = new GoogleAuthProvider();

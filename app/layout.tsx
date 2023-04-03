@@ -3,6 +3,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import Navbar from "./components/NavBar";
 import { theme } from "./chakra/theme";
+import { AuthProvider } from "./firebase/AuthProvider";
+import { UserCredential } from "firebase/auth";
 
 //export const metadata = {
 //	title: "Create Next App",
@@ -16,8 +18,12 @@ function RootLayout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body>
         <ChakraProvider theme={theme}>
-          <Navbar />
-          <Box>{children}</Box>
+          <AuthProvider>
+            <>
+              <Navbar />
+              <Box>{children}</Box>
+            </>
+          </AuthProvider>
         </ChakraProvider>
       </body>
     </html>
