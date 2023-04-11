@@ -2,18 +2,21 @@ import AuthContext from "@/app/firebase/AuthProvider ";
 import { useRouter } from "next/navigation";
 import { useEffect, useContext } from "react";
 import { NextPageContext } from "next";
+import { Box, Spinner } from "@chakra-ui/react";
 
 export interface ProtectedRouteProps extends NextPageContext {
   currentUser?: object;
 }
 
-const ProtectedRoute = <P extends object>(
+//naming convention use 'with'
+
+const withAuth = <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => {
   const Wrapper = (props: P) => {
     const router = useRouter();
     //use currentUser
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, loading } = useContext(AuthContext);
 
     useEffect(() => {
       if (!currentUser) {
@@ -23,6 +26,14 @@ const ProtectedRoute = <P extends object>(
     }, []);
 
     if (!currentUser) {
+      if (loading) {
+        return (
+          <Box display="flex" justifyContent="center" bg="starNight.Dark">
+            <Spinner />
+          </Box>
+        );
+      }
+
       // Return null or loading spinner while authentication is being checked
       return null;
     }
@@ -34,4 +45,4 @@ const ProtectedRoute = <P extends object>(
   return Wrapper;
 };
 
-export default ProtectedRoute;
+export default withAuth;

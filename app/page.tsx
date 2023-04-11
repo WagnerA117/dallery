@@ -1,11 +1,11 @@
 "use client";
 
-import { useContext, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase/clientApp";
+import { useContext } from "react";
+
 import AuthContext from "./firebase/AuthProvider";
 
 import SignInOptions from "./components/SignInOptions/SignInOptions";
+import RandomArtWorks from "./components/ArtWorkGenerator/RandomArtWorks";
 
 // protected routes you want for whole application
 // setting up a HOC
@@ -16,19 +16,19 @@ import SignInOptions from "./components/SignInOptions/SignInOptions";
 
 export default function Home() {
   // User Authentication
-  const [user, loading, error] = useAuthState(auth);
 
   const { currentUser } = useContext(AuthContext);
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   return (
     <>
       {currentUser ? (
-        <div> Hello there, welcome to Dallery!</div>
+        <div>
+          {" "}
+          Hello there, welcome to Dallery!
+          {/*<RandomArtWorks />*/}
+        </div>
       ) : (
-        <SignInOptions></SignInOptions>
+        <SignInOptions />
       )}
     </>
   );
