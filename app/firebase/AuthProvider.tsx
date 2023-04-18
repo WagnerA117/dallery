@@ -1,7 +1,14 @@
 // A wrapper component that will set the context of the logged in user
 // renders the rest of the app
 // context that holds user, global state check logged in user
-
+import {
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+import { User as FirebaseUser, UserCredential } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import React, {
   ReactNode,
   createContext,
@@ -9,14 +16,16 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+
 import { auth, gitHubProvider, googleAuthProvider } from "./clientApp";
-import { User as FirebaseUser, UserCredential } from "firebase/auth";
+
+// A wrapper component that will set the context of the logged in user
+// renders the rest of the app
+// context that holds user, global state check logged in user
+
+// A wrapper component that will set the context of the logged in user
+// renders the rest of the app
+// context that holds user, global state check logged in user
 
 interface AuthContextType {
   currentUser: FirebaseUser | null;
@@ -104,11 +113,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   //Logout Method using poput and githubauth
 
-  const logout: AuthContextType["logout"] = () => {
+  const logout: AuthContextType["logout"] = async () => {
+    const router = useRouter();
     return signOut(auth)
       .then(() => {
         console.log("logged out");
-        //navigate('/');
       })
       .catch((error) => {
         console.log(error);

@@ -1,29 +1,32 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
 
+import { db } from "@/app/firebase/clientApp ";
+import deleteGallery from "@/app/functions/deleteFirebaseGallery ";
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Modal,
   Grid,
+  Input,
+  Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
-  ModalOverlay,
   ModalHeader,
-  Input,
+  ModalOverlay,
+  Spinner,
   VStack,
   useToast,
-  Spinner,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
-import GalleryItem from "./GalleryItem";
-import { collection, getDocs } from "firebase/firestore";
-import addFirebaseGallery from "../../functions/addFirebaseGallery";
+import { collection, getDocs, query } from "firebase/firestore";
+import { orderBy } from "firebase/firestore";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
-import { db } from "@/app/firebase/clientApp ";
+import addFirebaseGallery from "../../functions/addFirebaseGallery";
 import CreateGalleryModal from "./CreateGalleryModal";
 import GalleryGrid from "./GalleryGrid";
+import GalleryItem from "./GalleryItem";
 
 interface Gallery {
   id: number;
@@ -46,9 +49,7 @@ const CreateGallery: React.FC = () => {
   };
 
   const handleCloseModal = () => {
-    setToggleGalleryModal(false);
-
-    setToggleGalleryModal(false);
+    return setToggleGalleryModal(false);
   };
 
   function EmptyInfoToast() {
@@ -76,7 +77,9 @@ const CreateGallery: React.FC = () => {
 
   const getFirebaseGalleries = async () => {
     const collectionRef = collection(db, "galleries");
-    const querySnapshot = await getDocs(collectionRef);
+    const querySnapshot = await getDocs(
+      query(collectionRef, orderBy("createdAt", "asc"))
+    );
 
     const documents = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -84,6 +87,8 @@ const CreateGallery: React.FC = () => {
     }));
 
     setGalleries(documents);
+
+    console.log(galleries);
   };
 
   useEffect(() => {
@@ -97,6 +102,7 @@ const CreateGallery: React.FC = () => {
     }
     //Firebase call to add the gallery to the collection
     addFirebaseGallery(galleryName, galleryDescription);
+    //Manage the stateful variables in the file
     setGalleryName("");
     setGalleryDescription("");
     setToggleGalleryModal(false);
@@ -165,13 +171,29 @@ const CreateGallery: React.FC = () => {
           border="10px"
           borderColor="starNight.light"
         >
-          {galleries.map((item) => (
+          {galleries.map((gallery) => (
             <>
-              <GalleryItem
-                key={item.id}
-                {...item}
-                updateFirebaseGalleries={getFirebaseGalleries}
-              />
+              <Box>
+                <Link
+                  href={{
+                    pathname: `./pages/galleries/${gallery.id}`,
+                    query: { id: gallery.id },
+                  }}
+                  key={gallery.id}
+                >
+                  <GalleryItem {...gallery} />
+                </Link>
+
+                <Button
+                  onClick={() => {
+                    deleteGallery(gallery.id);
+                    getFirebaseGalleries();
+                  }}
+                  width="100%"
+                >
+                  Remove
+                </Button>
+              </Box>
             </>
           ))}
         </Grid>

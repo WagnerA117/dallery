@@ -1,4 +1,5 @@
 "use client";
+
 import CreateGallery from "@/app/components/CreateGallery/CreateGallery ";
 import ProtectedRoute from "@/app/components/higherOrderComponent/withAuth ";
 

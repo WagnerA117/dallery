@@ -1,9 +1,15 @@
-import { db } from "../firebase/clientApp";
 import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase/clientApp";
 
-type AddGalleryType = (galleryName: string, galleryDescription: string) => any;
+type CreateNewGalleryType = (
+  galleryName: string,
+  galleryDescription: string
+) => any;
 
-const addFirebaseGallery: AddGalleryType = async (galleryName, description) => {
+const addFirebaseGallery: CreateNewGalleryType = async (
+  galleryName,
+  description
+) => {
   try {
     const newGallery = await addDoc(collection(db, "galleries"), {
       name: galleryName,
