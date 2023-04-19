@@ -3,7 +3,7 @@
 import LoadingSpinner from "@/app/components/higherOrderComponent/LoadingSpinner ";
 import useGallery from "@/app/customHooks/useGallery ";
 import getFirebaseGallery from "@/app/functions/FirebaseFunctions/getFirebaseGallery ";
-import { Box } from "@chakra-ui/react";
+import { Box, Input } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -43,6 +43,8 @@ const Gallery: React.FC = () => {
 
   return (
     <>
+      <Input type="file" placeholder=" Add images" />
+
       <Box>
         <h1> the name is {gallery?.name}</h1>
       </Box>
