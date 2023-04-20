@@ -4,11 +4,12 @@ import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 import { db } from "../firebase/clientApp";
+import { GalleryType } from "../firebase/types";
 
 const useGallery = (galleryId: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [gallery, setGallery] = useState(undefined);
+  const [gallery, setGallery] = useState<GalleryType>();
 
   useEffect(() => {
     const fetchGallery = async () => {
@@ -17,7 +18,8 @@ const useGallery = (galleryId: string) => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setGallery(docSnap!.data());
+          console.log(docSnap.data());
+          setGallery(docSnap!.data() as GalleryType);
         } else {
           throw new Error("No such document!");
         }

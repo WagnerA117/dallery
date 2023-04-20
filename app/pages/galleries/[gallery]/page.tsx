@@ -2,6 +2,7 @@
 
 import LoadingSpinner from "@/app/components/higherOrderComponent/LoadingSpinner ";
 import useGallery from "@/app/customHooks/useGallery ";
+import { GalleryType } from "@/app/firebase/types ";
 import getFirebaseGallery from "@/app/functions/FirebaseFunctions/getFirebaseGallery ";
 import { Box, Input } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
@@ -12,7 +13,7 @@ const Gallery: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const [gallery, setGallery] = useState<any>({});
+  const [gallery, setGallery] = useState<GalleryType>();
 
   const galleryId = searchParams.get("id");
 

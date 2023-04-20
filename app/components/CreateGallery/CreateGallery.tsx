@@ -1,6 +1,7 @@
 "use client";
 
 import { db } from "@/app/firebase/clientApp ";
+import { GalleryType } from "@/app/firebase/types ";
 import deleteGallery from "@/app/functions/deleteFirebaseGallery ";
 import { AddIcon } from "@chakra-ui/icons";
 import {
@@ -28,11 +29,6 @@ import CreateGalleryModal from "./CreateGalleryModal";
 import GalleryGrid from "./GalleryGrid";
 import GalleryItem from "./GalleryItem";
 
-interface Gallery {
-  id: number;
-  name?: string;
-}
-
 const CreateGallery: React.FC = () => {
   const toast = useToast();
 
@@ -40,7 +36,7 @@ const CreateGallery: React.FC = () => {
   const [galleryName, setGalleryName] = useState("");
   const [galleryDescription, setGalleryDescription] = useState("");
 
-  const [galleries, setGalleries] = useState<any[]>([]);
+  const [galleries, setGalleries] = useState<GalleryType[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -81,10 +77,13 @@ const CreateGallery: React.FC = () => {
       query(collectionRef, orderBy("createdAt", "asc"))
     );
 
-    const documents = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const documents = querySnapshot.docs.map(
+      (doc) =>
+        ({
+          id: doc.id,
+          ...doc.data(),
+        } as GalleryType)
+    );
 
     setGalleries(documents);
 
@@ -181,7 +180,7 @@ const CreateGallery: React.FC = () => {
                   }}
                   key={gallery.id}
                 >
-                  <GalleryItem {...gallery} />
+                  <GalleryItem gallery={gallery} />
                 </Link>
 
                 <Button
