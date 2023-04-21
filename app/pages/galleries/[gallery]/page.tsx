@@ -1,21 +1,28 @@
 "use client";
 
 import LoadingSpinner from "@/app/components/higherOrderComponent/LoadingSpinner ";
-import useGallery from "@/app/customHooks/useGallery ";
-import { GalleryType } from "@/app/firebase/types ";
+import { GalleryType, ImageType } from "@/app/firebase/types ";
 import getFirebaseGallery from "@/app/functions/FirebaseFunctions/getFirebaseGallery ";
-import { Box, Input } from "@chakra-ui/react";
+import { Box, Button, Flex, Input } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+interface Image {
+  id: string;
+  file: File;
+}
 
 const Gallery: React.FC = () => {
   const searchParams = useSearchParams();
 
-  const [loading, setLoading] = useState(true);
-
-  const [gallery, setGallery] = useState<GalleryType>();
-
   const galleryId = searchParams.get("id");
+
+  const [loading, setLoading] = useState(true);
+  const [gallery, setGallery] = useState<GalleryType>();
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<String>(null);
+
+  const selectedFileRef = useRef<HTMLInputElement>(null);
 
   //  const { gallery, loading, error } = useGallery(galleryId!);
   if (!galleryId) {
@@ -37,14 +44,41 @@ const Gallery: React.FC = () => {
   if (loading === true) {
     return <LoadingSpinner />;
   }
+  const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    if (event.target.files?.[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
 
-  if (loading === false) {
-    console.log(gallery);
-  }
+    reader.onload = (readerEvent) => {
+      if (readerEvent.target?.result) {
+        setSelectedFile(readerEvent.target?.result as string);
+      }
+    };
+  };
+
+  console.log(selectedFile);
 
   return (
     <>
-      <Input type="file" placeholder=" Add images" />
+      <Flex justify="center" align="center" width="100%">
+        <Flex>
+          <Button
+            onClick={() => {
+              selectedFileRef.current?.click();
+            }}
+          >
+            Upload an Image
+          </Button>
+        </Flex>
+      </Flex>
+
+      <Input
+        ref={selectedFileRef}
+        type="file"
+        hidden
+        onChange={onSelectImage}
+      ></Input>
 
       <Box>
         <h1> the name is {gallery?.name}</h1>
