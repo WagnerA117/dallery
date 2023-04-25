@@ -1,4 +1,5 @@
-import { collection, addDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
+
 import { db } from "../firebase/clientApp";
 
 type CreateNewGalleryType = (
@@ -16,6 +17,7 @@ const addFirebaseGallery: CreateNewGalleryType = async (
       description: description,
       createdAt: new Date(),
       updatedAt: new Date(),
+      downloadUrls: [],
     });
 
     return newGallery;

@@ -1,6 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useContext } from "react";
 import Link from "next/link";
+import { useContext } from "react";
+
 import AuthContext from "../firebase/AuthProvider";
 
 const Navbar: React.FC = () => {
@@ -42,10 +43,10 @@ const Navbar: React.FC = () => {
         {" "}
         <Link href="./pages/about">About</Link>
       </Button>
-      <Button sx={customButtonStyle}>
+      {/*<Button sx={customButtonStyle}>
         {" "}
         <Link href="./pages/profile">Profile</Link>
-      </Button>
+      </Button>*/}
       {currentUser ? (
         <Button bg="orange.500" onClick={logout}>
           {" "}

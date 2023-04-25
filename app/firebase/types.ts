@@ -9,5 +9,10 @@ export type GalleryType = {
   description: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;
-  images: [];
+  downloadUrls: string[];
+};
+
+export type ImageType = {
+  id: string;
+  name: string;
 };
