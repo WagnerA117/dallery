@@ -60,8 +60,7 @@ const Gallery: React.FC = () => {
     return <LoadingSpinner />;
   }
 
-  //LOGIC FOR GETTING FILELIST TO A STATEFUL VARIABLE
-  // this works for several
+  //This handles uploading the files to manage before saving to firebase.
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //Now to try get this image with name properties.
@@ -70,41 +69,53 @@ const Gallery: React.FC = () => {
       const newFiles = Array.from(event.target.files);
       setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
 
-      newFiles.map(() => {
+      newFiles.map((file) => {
         const reader = new FileReader();
-        reader.readAsDataURL(newFiles[0]);
-        reader.onload = () => {
-          setDataUrls((prevDataUrls) => [...prevDataUrls, reader.result]);
-          console.log(dataUrls, " these are data urls");
-        };
-      });
 
-      dataUrls.map((dataUrl, index) => {
-        setDataUrls((dataUrl, index) => {});
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            setSelectedFiles((prevFiles) => [...prevFiles, e.target.result]);
+          }
+        };
+
+        reader.readAsDataURL(file);
       });
     }
-
-    //image loading state for display
-
-    //This is one way to get an image.
-    //const files = event.target.files;
-
-    //console.log(files);
-
-    //if (files !== null) {
-    //  for (let i = 0; i < files.length; i++) {
-    //    const reader = new FileReader();
-    //    reader.readAsDataURL(files[i]);
-    //  }
-    //}
   };
 
   const saveSelected = async () => {
     //save selected files to firebase
 
-    const galleryRef = doc(db, "galleries", galleryId);
+    const storageRef = ref(storage, "galleries/" + galleryId + "/images");
 
-    setSelectedFiles(null);
+    if (selectedFiles) {
+      selectedFiles.map(async (file) => {
+        if (file) {
+          const imageRef = ref(storageRef, file?.name);
+          await uploadBytes(imageRef, file);
+          const downloadUrl = await getDownloadURL(imageRef);
+          const imageObject = {
+            id: v4(),
+            name: file.name,
+            downloadUrl,
+            createdAt: new Date(),
+          };
+
+          const docRef = doc(db, "galleries", galleryId);
+
+          await updateDoc(docRef, {
+            documentUrls: arrayUnion(imageObject),
+          });
+          //  setUploadFiles((prevUploadFiles) => [
+          //    ...prevUploadFiles,
+          //    imageObject,
+          //  ]);
+        }
+
+        setSelectedFiles([]);
+        setDataUrls([]);
+      });
+    }
   };
 
   console.log(selectedFiles, " this is the selected files");
@@ -116,7 +127,13 @@ const Gallery: React.FC = () => {
       <Flex justify="center" align="center" width="100%">
         <Flex>
           {selectedFiles ? (
-            <Button onClick={() => setSelectedFiles(null)} bg="orange.500">
+            <Button
+              onClick={() => {
+                setSelectedFiles([]);
+                setDataUrls([]);
+              }}
+              bg="orange.500"
+            >
               {" "}
               Cancel
             </Button>
@@ -143,16 +160,10 @@ const Gallery: React.FC = () => {
         onChange={handleFileChange}
       ></Input>
 
-      <Input type="file" margin="2%" />
-
-      <Box></Box>
-
       {selectedFiles?.map((file) => {
         return (
           <Box>
-            {/*<Button onClick={() => removeImage(file)}>Remove</Button>*/}
-            <div> {file?.name}</div>
-            <Image src={file.name} key={Math.random()} />
+            <Image src={file[1]} key={Math.random()} />
           </Box>
         );
       })}
@@ -161,14 +172,3 @@ const Gallery: React.FC = () => {
 };
 
 export default Gallery;
-
-//useEffect(() => {
-//  const getGallery = async () => {
-//    const gallery = await getFirebaseGallery(galleryId);
-
-//    setGallery(gallery);
-//  };
-
-//  // eslint-disable-next-line react-hooks/exhaustive-deps
-//  getGallery();
-//}, []);
