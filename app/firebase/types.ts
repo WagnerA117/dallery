@@ -3,13 +3,18 @@ export type Timestamp = {
   nanoseconds: number;
 };
 
+export type DocumentUrlObject = {
+  downloadUrl: string;
+  id: string;
+};
+
 export type GalleryType = {
   id: string;
   name: string;
   description: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;
-  downloadUrls: string[];
+  documentUrls: DocumentUrlObject[];
 };
 
 export type ImageType = {

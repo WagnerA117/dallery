@@ -114,7 +114,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   //Logout Method using poput and githubauth
 
   const logout: AuthContextType["logout"] = async () => {
-    const router = useRouter();
     return signOut(auth)
       .then(() => {
         console.log("logged out");
