@@ -151,7 +151,7 @@ const Gallery: React.FC = () => {
     const docRef = doc(db, "galleries", galleryId);
     const storageRef = ref(storage, `galleries/${galleryId}/images/${imageId}`);
 
-    const updatedDocumentArray = gallery?.documentUrls.filter(
+    const updatedDocumentArray = gallery?.documentUrls?.filter(
       (items) => items.id !== imageId
     );
 
@@ -210,7 +210,7 @@ const Gallery: React.FC = () => {
 
       <Box>
         <SimpleGrid>
-          {gallery?.documentUrls.map((item) => {
+          {gallery?.documentUrls?.map((item) => {
             return (
               <>
                 <Image
