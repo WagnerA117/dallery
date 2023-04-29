@@ -1,10 +1,11 @@
 "use client";
+
 import { ChakraProvider } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
-import Navbar from "./components/NavBar";
+
 import { theme } from "./chakra/theme";
+import Navbar from "./components/NavBar";
 import { AuthProvider } from "./firebase/AuthProvider";
-import { UserCredential } from "firebase/auth";
 
 //export const metadata = {
 //	title: "Create Next App",

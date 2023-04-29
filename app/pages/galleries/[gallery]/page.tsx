@@ -8,12 +8,12 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
-  GridItem,
+  Heading,
   Image,
   List,
   ListItem,
   SimpleGrid,
+  Text,
 } from "@chakra-ui/react";
 import { arrayUnion, doc } from "firebase/firestore";
 import { updateDoc } from "firebase/firestore";
@@ -51,7 +51,6 @@ type FileType = {
 
 const Gallery: React.FC = () => {
   const searchParams = useSearchParams();
-
   const galleryId = searchParams.get("id");
 
   const [loading, setLoading] = useState(true);
@@ -66,7 +65,6 @@ const Gallery: React.FC = () => {
     const gallery = await getFirebaseGallery(galleryId as string);
 
     setGallery(gallery);
-
     setLoading(false);
   };
 
@@ -81,7 +79,7 @@ const Gallery: React.FC = () => {
       if (acceptedFiles) {
         setFiles((previousFiles) => [
           ...previousFiles,
-          ...acceptedFiles.map((file) =>
+          ...acceptedFiles.map((file: FileType) =>
             Object.assign(file, { preview: URL.createObjectURL(file) })
           ),
         ]);
@@ -97,7 +95,7 @@ const Gallery: React.FC = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useEffect(() => {
-    // Revoke the data uris to avoid memory leaks
+    // Revoke the data URL's to avoid memory leaks
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [files]);
 
@@ -165,37 +163,51 @@ const Gallery: React.FC = () => {
 
   return (
     <>
-      <Flex justify="center" align="center" width="100%"></Flex>
-
-      <Flex border="8px" minHeight="100px">
-        <Box {...getRootProps()} minHeight="">
-          <input {...getInputProps()} />
+      {/* This is the dropszone and onselect */}
+      <Flex
+        border="6px"
+        minHeight="120px"
+        bg="starNight.medium"
+        justifyContent="center"
+        alignItems="center"
+        margin="2%"
+      >
+        <Box {...getRootProps({})}>
+          <input {...getInputProps({})} />
           {isDragActive ? (
-            <p>Drop the files here ...</p>
+            <Text> Drop Em</Text>
           ) : (
-            <Box>Drag 'n' drop some files here, or click to select files</Box>
+            <Button bg="starNight.hover" color="starNight.dark">
+              Drag files or Select Upload
+            </Button>
           )}
         </Box>
       </Flex>
 
-      <Flex>
+      <Flex justifyContent="center" alignItems="center">
         {files && showCancelButton ? (
-          <Button
-            onClick={() => {
-              setFiles([]);
-              setShowCancelButton(false);
-            }}
-            bg="orange.500"
-          >
-            {" "}
-            Cancel Upload
-          </Button>
+          <>
+            <Button
+              onClick={() => {
+                setFiles([]);
+                setShowCancelButton(false);
+              }}
+              bg="orange.500"
+            >
+              {" "}
+              Cancel Upload
+            </Button>
+            <Button onClick={saveSelected} backgroundColor="starNight.light">
+              {" "}
+              Save Images
+            </Button>
+          </>
         ) : null}
-        <Button onClick={saveSelected} backgroundColor="starNight.light">
-          {" "}
-          Save Images
-        </Button>
       </Flex>
+
+      {/* This section allows the user to preview
+ 	and check if they're selected the correct 
+	photos before they upload */}
 
       <Flex justify="center" alignItems="center">
         <List>

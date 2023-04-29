@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useContext } from "react";
 
+import ToggleThemeButton from "../components/ToggleTheme/ToggleTheme";
 import AuthContext from "../firebase/AuthProvider";
 
 const Navbar: React.FC = () => {
@@ -24,7 +25,7 @@ const Navbar: React.FC = () => {
       justifyContent="space-between"
       alignItems="center"
       padding="2%"
-      margin="1%"
+      margin="2%"
       bg="starNight.dark"
     >
       <Button sx={customButtonStyle}>
@@ -57,6 +58,7 @@ const Navbar: React.FC = () => {
           Login
         </Button>
       )}
+      <ToggleThemeButton />
     </Flex>
   );
 };
