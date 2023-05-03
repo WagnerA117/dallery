@@ -4,6 +4,8 @@
 import {
   GithubAuthProvider,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
@@ -29,11 +31,13 @@ import { auth, gitHubProvider, googleAuthProvider } from "./clientApp";
 
 interface AuthContextType {
   currentUser: FirebaseUser | null;
+  emailLogin?: () => Promise<UserCredential>;
+  googleLogin?: () => Promise<UserCredential>;
+  gitHubLogin?: () => Promise<UserCredential>;
   loading: boolean;
   login?: () => Promise<UserCredential>;
-  googleLogin?: () => Promise<UserCredential>;
-  gitHubLogin: () => Promise<UserCredential>;
   logout: () => Promise<void>;
+  newUserEmailLogin?: () => Promise<UserCredential>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -79,6 +83,50 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           const credential = GithubAuthProvider.credentialFromError(error);
           reject(error);
           // ...
+        });
+    });
+  };
+
+  //login in with email and password
+
+  const emailLogin: AuthContextType["login"] = async (
+    email: string,
+    password: string
+  ) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      const user = userCredential.user;
+
+      return user;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //Create new user with email and password
+
+  const newUserEmailLogin: AuthContextType["login"] = (
+    email: string,
+    password: string
+  ) => {
+    return new Promise((resolve, reject) => {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          // Signed in
+          const user = result.user;
+          resolve(result);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          reject(error);
+          // ..
         });
     });
   };
@@ -136,7 +184,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, googleLogin, gitHubLogin, logout, loading }}
+      value={{
+        currentUser,
+        newUserEmailLogin,
+        emailLogin,
+        googleLogin,
+        gitHubLogin,
+        logout,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>

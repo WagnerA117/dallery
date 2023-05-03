@@ -5,7 +5,17 @@ export type Timestamp = {
 
 export type DocumentUrlObject = {
   downloadUrl: string;
+  name: string;
   id: string;
+};
+
+export type FileType = {
+  path: string;
+  preview: string;
+  lastModified: number;
+  name: string;
+  size: number;
+  type: string;
 };
 
 export type GalleryType = {

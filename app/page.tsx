@@ -1,11 +1,11 @@
 "use client";
 
+import { Heading } from "@chakra-ui/react";
 import { useContext } from "react";
 
-import AuthContext from "./firebase/AuthProvider";
-
-import SignInOptions from "./components/SignInOptions/SignInOptions";
 import RandomArtWorks from "./components/ArtWorkGenerator/RandomArtWorks";
+import SignInOptions from "./components/SignInOptions/SignInOptions";
+import AuthContext from "./firebase/AuthProvider";
 
 // protected routes you want for whole application
 // setting up a HOC
@@ -24,7 +24,7 @@ export default function Home() {
       {currentUser ? (
         <div>
           {" "}
-          Hello there, welcome to Dallery!
+          <Heading margin="2%">Welcome to your gallery of Dreams</Heading>
           {/*<RandomArtWorks />*/}
         </div>
       ) : (

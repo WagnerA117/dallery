@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
-import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import AuthContext from "@/app/firebase/AuthProvider ";
+import { AddIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Heading, Image, Input } from "@chakra-ui/react";
+import React, { useContext, useState } from "react";
 
 const buttonStyle = {
   bg: " orange.400",
@@ -12,9 +13,30 @@ const buttonStyle = {
 };
 
 const SignInOptions = () => {
-  const { googleLogin, gitHubLogin } = useContext(AuthContext);
+  const { emailLogin, googleLogin, gitHubLogin, newUserEmailLogin } =
+    useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailLogin = () => {
+    //@ts-ignore
+    emailLogin(email, password);
+  };
+
+  const handleNewUserEmailLogin = () => {
+    //@ts-ignore
+    newUserEmailLogin(email, password);
+  };
+
+  console.log(email, password);
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      padding="2%"
+      margin="1%"
+    >
       <Flex
         justifyContent="center"
         alignItems="center"
@@ -23,6 +45,7 @@ const SignInOptions = () => {
         bg="starNight.dark"
         maxH="480"
         maxW="480"
+        padding="2%"
       >
         <Heading size="lg"> Sign in to continue</Heading>{" "}
         <Button sx={buttonStyle} onClick={gitHubLogin}>
@@ -30,7 +53,7 @@ const SignInOptions = () => {
             src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
             alt=" This is the GitHub SignIn Option Icon"
             height="30px"
-            maxW="30px"
+            width="100%"
             margin="0.5em"
           />{" "}
           Sign In with GitHub
@@ -38,15 +61,48 @@ const SignInOptions = () => {
         <Button sx={buttonStyle} onClick={googleLogin}>
           {" "}
           <Image
-            bg="orange.400"
             src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg"
             alt=" This is the Gmail Sign In Option"
             height="30px"
-            maxW="30px"
+            width="100%"
             margin="0.5em"
           />{" "}
           Sign In with Gmail
         </Button>
+        {/* This is the password section  */}
+        <Heading size="5">Or Sign in with email and password</Heading>
+        <Input
+          size="md"
+          placeholder="Email"
+          margin="2%"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        ></Input>
+        <Input
+          size="md"
+          placeholder="Password"
+          margin="2%"
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        ></Input>
+        <Box>
+          <Button
+            sx={buttonStyle}
+            onClick={() => handleEmailLogin}
+            leftIcon={<ArrowRightIcon />}
+          >
+            Login
+          </Button>
+          <Button
+            sx={buttonStyle}
+            leftIcon={<AddIcon />}
+            onClick={() => handleNewUserEmailLogin}
+          >
+            Create Account
+          </Button>
+        </Box>
       </Flex>
     </Box>
   );

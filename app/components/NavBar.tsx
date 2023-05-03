@@ -1,5 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { async } from "@firebase/util";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
 import ToggleThemeButton from "../components/ToggleTheme/ToggleTheme";
@@ -7,6 +9,8 @@ import AuthContext from "../firebase/AuthProvider";
 
 const Navbar: React.FC = () => {
   const { currentUser, login, logout } = useContext(AuthContext);
+  const router = useRouter();
+  const handleLogout = () => {};
 
   const customButtonStyle = {
     backgroundColor: "starNight.medium",
@@ -53,11 +57,7 @@ const Navbar: React.FC = () => {
           {" "}
           Logout
         </Button>
-      ) : (
-        <Button bg="orange.500" onClick={login}>
-          Login
-        </Button>
-      )}
+      ) : null}
       <ToggleThemeButton />
     </Flex>
   );

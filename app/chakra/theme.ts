@@ -10,11 +10,15 @@ export const theme = extendTheme({
       900: "#1a202c",
     },
     starNight: {
-      dark: "#123f77",
+      dark: "#2B41A7",
+      dark2: "#1F2E7B",
+      dark3: "#1A2569",
       medium: "#0f86b6",
-      light: "#37cae5",
-      hover: "#f5db37",
+      light: "#6283C8",
+      accent: "#C7AD24",
+      hover: "#CCC776",
     },
+    parasolWoman: {},
     accent: {
       100: "#37cae5",
     },

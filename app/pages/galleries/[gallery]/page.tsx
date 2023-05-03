@@ -1,8 +1,10 @@
 "use client";
 
+import DisplayImage from "@/app/components/GalleryComponents/DisplayImage ";
 import LoadingSpinner from "@/app/components/higherOrderComponent/LoadingSpinner ";
+import ProtectedRoute from "@/app/components/higherOrderComponent/withAuth ";
 import { db } from "@/app/firebase/clientApp ";
-import { GalleryType } from "@/app/firebase/types ";
+import { FileType, GalleryType } from "@/app/firebase/types ";
 import getFirebaseGallery from "@/app/functions/FirebaseFunctions/getFirebaseGallery ";
 import {
   Box,
@@ -12,7 +14,6 @@ import {
   Image,
   List,
   ListItem,
-  SimpleGrid,
   Text,
 } from "@chakra-ui/react";
 import { arrayUnion, doc } from "firebase/firestore";
@@ -40,23 +41,14 @@ interface Image {
 }
 type FileListArray = Array<FileList | null>;
 
-type FileType = {
-  path: string;
-  preview: string;
-  lastModified: number;
-  name: string;
-  size: number;
-  type: string;
-};
-
 const Gallery: React.FC = () => {
   const searchParams = useSearchParams();
   const galleryId = searchParams.get("id");
 
   const [loading, setLoading] = useState(true);
-  const [gallery, setGallery] = useState<GalleryType>();
-  const [files, setFiles] = useState<FileType[] | []>([]);
-  const [showCancelButton, setShowCancelButton] = useState(false);
+  const [gallery, setGallery] = useState<GalleryType[] | []>();
+  const [files, setFiles] = useState<FileType[]>([]);
+  const [showCancelSave, setCancelSave] = useState(false);
 
   const [rejected, setRejected] = useState([]);
 
@@ -75,15 +67,14 @@ const Gallery: React.FC = () => {
 
   const onDrop = useCallback(
     (acceptedFiles: FileList, rejectedFiles: FileListArray) => {
-      console.log(acceptedFiles);
       if (acceptedFiles) {
+        setCancelSave(true);
         setFiles((previousFiles) => [
           ...previousFiles,
           ...acceptedFiles.map((file: FileType) =>
             Object.assign(file, { preview: URL.createObjectURL(file) })
           ),
         ]);
-        setShowCancelButton(true);
       }
 
       if (rejectedFiles?.length > 0) {
@@ -122,6 +113,7 @@ const Gallery: React.FC = () => {
       await uploadBytes(imageRef, file, storageMetaData);
 
       const downloadUrl = await getDownloadURL(imageRef);
+	  
       const docRef = doc(db, "galleries", galleryId);
       const imageObject = {
         id: imageId,
@@ -135,10 +127,10 @@ const Gallery: React.FC = () => {
         documentUrls: arrayUnion(imageObject),
       });
 
-      setFiles([]);
+      await getGallery();
     });
-
-    getGallery();
+    setFiles([]);
+    setCancelSave(false);
   };
 
   if (loading === true) {
@@ -158,8 +150,7 @@ const Gallery: React.FC = () => {
     getGallery();
   };
 
-  console.log(files);
-  console.log(gallery, " thisis the gallery");
+  console.log(gallery);
 
   return (
     <>
@@ -167,7 +158,7 @@ const Gallery: React.FC = () => {
       <Flex
         border="6px"
         minHeight="120px"
-        bg="starNight.medium"
+        bg="orange.400"
         justifyContent="center"
         alignItems="center"
         margin="2%"
@@ -185,12 +176,12 @@ const Gallery: React.FC = () => {
       </Flex>
 
       <Flex justifyContent="center" alignItems="center">
-        {files && showCancelButton ? (
-          <>
+        {showCancelSave ? (
+          <Flex>
             <Button
               onClick={() => {
                 setFiles([]);
-                setShowCancelButton(false);
+                setCancelSave(false);
               }}
               bg="orange.500"
             >
@@ -201,7 +192,7 @@ const Gallery: React.FC = () => {
               {" "}
               Save Images
             </Button>
-          </>
+          </Flex>
         ) : null}
       </Flex>
 
@@ -220,25 +211,11 @@ const Gallery: React.FC = () => {
         </List>
       </Flex>
 
-      <Box>
-        <SimpleGrid>
-          {gallery?.documentUrls?.map((item) => {
-            return (
-              <>
-                <Image
-                  src={item.downloadUrl}
-                  key={item.id}
-                  onClick={() => deleteImage(item.id)}
-                ></Image>
-
-                <Button onClick={() => deleteImage(item.id)}>Delete</Button>
-              </>
-            );
-          })}
-        </SimpleGrid>
+      <Box margin="2%">
+        <DisplayImage gallery={gallery} deleteImage={deleteImage} />
       </Box>
     </>
   );
 };
 
-export default Gallery;
+export default ProtectedRoute(Gallery);
