@@ -3,25 +3,22 @@ import { GalleryType } from "@/app/firebase/types ";
 import { collection, doc, getDoc } from "firebase/firestore";
 
 //change this to use the gallery id instead of the user id
-const getFirebaseGallery = async (
+const getFirebaseImages = async (
   userId: string,
   galleryId: string
 ): Promise<GalleryType | undefined> => {
-  const docRef = doc(db, "galleries", userId);
+  const docRef = doc(db, "userImages", userId);
   const docSnap = await getDoc(docRef);
-
-  console.log(docSnap, "docSnap");
 
   if (docSnap.exists()) {
     const document = docSnap.data();
-    console.log(document, "document");
-    const gallery = document?.userGalleries?.find(
-      (gallery: GalleryType) => gallery.id === galleryId
+    const userImages = document?.images?.filter(
+      (image) => image.galleryId === galleryId
     );
-    return gallery;
+    return userImages;
   } else {
     console.log("No such document!");
   }
 };
 
-export default getFirebaseGallery;
+export default getFirebaseImages;

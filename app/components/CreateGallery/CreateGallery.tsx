@@ -1,13 +1,13 @@
 "use client";
 
-import { db } from "@/app/firebase/clientApp ";
+import { auth, db } from "@/app/firebase/clientApp ";
 import { GalleryType } from "@/app/firebase/types ";
-import deleteGallery from "@/app/functions/deleteFirebaseGallery ";
 import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Grid,
+  Heading,
   Input,
   Modal,
   ModalBody,
@@ -19,14 +19,19 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { collection, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import { orderBy } from "firebase/firestore";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 import addFirebaseGallery from "../../functions/addFirebaseGallery";
-import CreateGalleryModal from "./CreateGalleryModal";
-import GalleryGrid from "./GalleryGrid";
 import GalleryItem from "./GalleryItem";
 
 const CreateGallery: React.FC = () => {
@@ -39,6 +44,8 @@ const CreateGallery: React.FC = () => {
   const [galleries, setGalleries] = useState<GalleryType[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const userId = auth.currentUser?.uid;
 
   const handleOpenModal = () => {
     return setToggleGalleryModal(true);
@@ -72,42 +79,67 @@ const CreateGallery: React.FC = () => {
   };
 
   const getFirebaseGalleries = async () => {
-    const collectionRef = collection(db, "galleries");
-    const querySnapshot = await getDocs(
-      query(collectionRef, orderBy("createdAt", "asc"))
-    );
+    const docRef = doc(db, "galleries", userId!);
+    const docSnap = await getDoc(docRef);
 
-    const documents = querySnapshot.docs.map(
-      (doc) =>
-        ({
-          id: doc.id,
-          ...doc.data(),
-        } as GalleryType)
-    );
+    //const collectionRef = collection(db, "galleries", userId);
 
-    setGalleries(documents);
+    if (docSnap.exists()) {
+    }
 
-    console.log(galleries);
+    const document = docSnap.data();
+
+    //const querySnapshot = await getDocs(
+    //  //makesure each document has a createdAt field so it can be queried
+    //  query(collectionRef, orderBy("createdAt", "asc"))
+    //);
+
+    //const documents = querySnapshot.docs.map(
+    //  (doc) =>
+    //    ({
+    //      id: doc.id,
+    //      ...doc.data(),
+    //    } as GalleryType)
+    //);
+
+    setGalleries(document!.userGalleries);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     getFirebaseGalleries();
     setIsLoading(false);
   }, []);
 
-  function createNewGallery() {
+  const createNewGallery = async () => {
     if (!galleryName) {
       return EmptyInfoToast();
     }
+    setIsLoading(true);
     //Firebase call to add the gallery to the collection
     addFirebaseGallery(galleryName, galleryDescription);
     //Manage the stateful variables in the file
     setGalleryName("");
     setGalleryDescription("");
     setToggleGalleryModal(false);
+    await getFirebaseGalleries();
+    setIsLoading(false);
+
+    //bugfix: success should only run on sucessful creation of gallery
+    //SuccessToast();
+  };
+
+  const deleteGallery = async (galleryId: string) => {
+    const docRef = doc(db, "galleries", userId!);
+
+    const updatedDocumentArray = galleries.filter(
+      (items) => items.id !== galleryId
+    );
+
+    await updateDoc(docRef, { userGalleries: updatedDocumentArray });
+
     getFirebaseGalleries();
-    SuccessToast();
-  }
+  };
 
   if (isLoading) {
     return <Spinner />;
@@ -170,7 +202,7 @@ const CreateGallery: React.FC = () => {
           border="10px"
           borderColor="starNight.light"
         >
-          {galleries.map((gallery) => (
+          {galleries?.map((gallery, index) => (
             <>
               <Box>
                 <Link
@@ -184,9 +216,9 @@ const CreateGallery: React.FC = () => {
                 </Link>
 
                 <Button
-                  onClick={() => {
+                  onClick={async () => {
                     deleteGallery(gallery.id);
-                    getFirebaseGalleries();
+                    await getFirebaseGalleries();
                   }}
                   width="100%"
                 >

@@ -7,9 +7,14 @@ interface GalleryItemProps {
 }
 
 const GalleryItem: React.FC<GalleryItemProps> = ({ gallery }) => {
+  const {
+    //@ts-ignore
+    galleryName,
+  } = gallery;
+
   return (
     <Card>
-      <Heading>{gallery.name}</Heading>
+      <Heading>{galleryName}</Heading>
       <Image
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Vincent_van_Gogh_-_Almond_blossom_-_Google_Art_Project.jpg/540px-Vincent_van_Gogh_-_Almond_blossom_-_Google_Art_Project.jpg"
         alt="Van Gogh Almond Blossom Painting"

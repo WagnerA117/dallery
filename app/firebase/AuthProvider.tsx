@@ -88,7 +88,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   //login in with email and password
-
+  //@ts-ignore
   const emailLogin: AuthContextType["login"] = async (
     email: string,
     password: string
@@ -110,6 +110,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   //Create new user with email and password
 
+  //@ts-ignore
   const newUserEmailLogin: AuthContextType["login"] = (
     email: string,
     password: string

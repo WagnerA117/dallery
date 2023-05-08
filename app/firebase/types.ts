@@ -20,7 +20,9 @@ export type FileType = {
 
 export type GalleryType = {
   id: string;
-  name: string;
+  galleryName: string;
+  userId: string;
+  isFavourite: boolean;
   description: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;

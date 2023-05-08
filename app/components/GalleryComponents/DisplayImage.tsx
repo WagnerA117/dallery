@@ -17,8 +17,7 @@ type PropTypes = {
   deleteImage: (id: string) => void;
 };
 
-const DisplayImage: React.FC<PropTypes> = ({ gallery, deleteImage }) => {
-  console.log(gallery);
+const DisplayImage: React.FC<PropTypes> = ({ images, deleteImage }) => {
   const [viewImage, setViewImage] = useState<DocumentUrlObject>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,7 +47,7 @@ const DisplayImage: React.FC<PropTypes> = ({ gallery, deleteImage }) => {
         </ModalContent>
       </Modal>
 
-      {gallery?.documentUrls?.map((image: DocumentUrlObject) => {
+      {images?.map((image: DocumentUrlObject) => {
         return (
           <>
             <Image

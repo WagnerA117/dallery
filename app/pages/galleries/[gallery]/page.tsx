@@ -3,9 +3,10 @@
 import DisplayImage from "@/app/components/GalleryComponents/DisplayImage ";
 import LoadingSpinner from "@/app/components/higherOrderComponent/LoadingSpinner ";
 import ProtectedRoute from "@/app/components/higherOrderComponent/withAuth ";
-import { db } from "@/app/firebase/clientApp ";
+import { auth, db } from "@/app/firebase/clientApp ";
 import { FileType, GalleryType } from "@/app/firebase/types ";
 import getFirebaseGallery from "@/app/functions/FirebaseFunctions/getFirebaseGallery ";
+import getFirebaseImages from "@/app/functions/FirebaseFunctions/getFirebaseImages ";
 import {
   Box,
   Button,
@@ -16,6 +17,7 @@ import {
   ListItem,
   Text,
 } from "@chakra-ui/react";
+import { addDoc, collection } from "firebase/firestore";
 import { arrayUnion, doc } from "firebase/firestore";
 import { updateDoc } from "firebase/firestore";
 import {
@@ -47,22 +49,31 @@ const Gallery: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [gallery, setGallery] = useState<GalleryType[] | []>();
+  const [images, setImages] = useState<Image[]>([]);
   const [files, setFiles] = useState<FileType[]>([]);
   const [showCancelSave, setCancelSave] = useState(false);
 
   const [rejected, setRejected] = useState([]);
 
   //  const { gallery, loading, error } = useGallery(galleryId!);
+  const userId = auth.currentUser?.uid;
   const getGallery = async () => {
-    const gallery = await getFirebaseGallery(galleryId as string);
+    const gallery = await getFirebaseGallery(userId as string, galleryId!);
 
     setGallery(gallery);
     setLoading(false);
   };
 
+  const getImages = async () => {
+    const images = await getFirebaseImages(userId as string, galleryId!);
+    setImages(images);
+  };
+
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     getGallery();
+    getImages();
+
+    setLoading(false);
   }, []);
 
   const onDrop = useCallback(
@@ -113,18 +124,20 @@ const Gallery: React.FC = () => {
       await uploadBytes(imageRef, file, storageMetaData);
 
       const downloadUrl = await getDownloadURL(imageRef);
-	  
-      const docRef = doc(db, "galleries", galleryId);
+
+      const docRef = doc(db, "userImages", userId!);
+
       const imageObject = {
         id: imageId,
         name: file.name,
+        galleryId,
         downloadUrl,
         createdAt: new Date(),
         isFavourite: false,
       };
 
       await updateDoc(docRef, {
-        documentUrls: arrayUnion(imageObject),
+        images: arrayUnion(imageObject),
       });
 
       await getGallery();
@@ -136,25 +149,22 @@ const Gallery: React.FC = () => {
   if (loading === true) {
     return <LoadingSpinner />;
   }
-
+  //improvement: use firebase arrayRemove to update this!
   const deleteImage = async (imageId: string) => {
-    const docRef = doc(db, "galleries", galleryId);
+    const docRef = doc(db, "userImages", userId!);
     const storageRef = ref(storage, `galleries/${galleryId}/images/${imageId}`);
 
-    const updatedDocumentArray = gallery?.documentUrls?.filter(
-      (items) => items.id !== imageId
-    );
+    const updatedDocumentArray = images.filter((items) => items.id !== imageId);
 
-    await updateDoc(docRef, { documentUrls: updatedDocumentArray });
+    await updateDoc(docRef, { images: updatedDocumentArray });
     await deleteObject(storageRef);
-    getGallery();
+    getImages();
   };
-
-  console.log(gallery);
 
   return (
     <>
       {/* This is the dropszone and onselect */}
+      <Heading> {gallery?.galleryName} </Heading>
       <Flex
         border="6px"
         minHeight="120px"
@@ -212,7 +222,7 @@ const Gallery: React.FC = () => {
       </Flex>
 
       <Box margin="2%">
-        <DisplayImage gallery={gallery} deleteImage={deleteImage} />
+        <DisplayImage images={images} deleteImage={deleteImage} />
       </Box>
     </>
   );

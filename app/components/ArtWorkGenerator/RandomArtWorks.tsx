@@ -2,7 +2,7 @@
 
 import getRandomArtsyImage from "@/app/functions/getRandomArtsyImage ";
 import { Button, Image, Spinner } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 //const getArtsyArtworkdata = async () => {
 //  const response = await fetch(`https://api.artsy.net/api/artworks`, {
