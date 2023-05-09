@@ -1,4 +1,4 @@
-import { GalleryType } from "@/app/firebase/types ";
+import { GalleryType, ImageType } from "@/app/firebase/types ";
 import { DocumentUrlObject } from "@/app/firebase/types ";
 import {
   Button,
@@ -14,6 +14,7 @@ import React, { useState } from "react";
 
 type PropTypes = {
   gallery: GalleryType;
+  images: ImageType[];
   deleteImage: (id: string) => void;
 };
 

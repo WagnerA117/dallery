@@ -10,11 +10,8 @@ const getFirebaseGallery = async (
   const docRef = doc(db, "galleries", userId);
   const docSnap = await getDoc(docRef);
 
-  console.log(docSnap, "docSnap");
-
   if (docSnap.exists()) {
     const document = docSnap.data();
-    console.log(document, "document");
     const gallery = document?.userGalleries?.find(
       (gallery: GalleryType) => gallery.id === galleryId
     );

@@ -28,7 +28,6 @@ const SignInOptions = () => {
     newUserEmailLogin(email, password);
   };
 
-  console.log(email, password);
   return (
     <Box
       display="flex"

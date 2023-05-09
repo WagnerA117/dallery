@@ -1,5 +1,3 @@
-//Note: Currently not in use
-
 //import React from "react";
 //import {
 //  Box,

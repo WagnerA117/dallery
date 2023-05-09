@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Grid,
-  Heading,
   Input,
   Modal,
   ModalBody,
@@ -19,19 +18,11 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  updateDoc,
-} from "firebase/firestore";
-import { orderBy } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import addFirebaseGallery from "../../functions/addFirebaseGallery";
+import addFirebaseGallery from "../../functions/FirebaseFunctions/addFirebaseGallery";
 import GalleryItem from "./GalleryItem";
 
 const CreateGallery: React.FC = () => {
@@ -82,25 +73,7 @@ const CreateGallery: React.FC = () => {
     const docRef = doc(db, "galleries", userId!);
     const docSnap = await getDoc(docRef);
 
-    //const collectionRef = collection(db, "galleries", userId);
-
-    if (docSnap.exists()) {
-    }
-
     const document = docSnap.data();
-
-    //const querySnapshot = await getDocs(
-    //  //makesure each document has a createdAt field so it can be queried
-    //  query(collectionRef, orderBy("createdAt", "asc"))
-    //);
-
-    //const documents = querySnapshot.docs.map(
-    //  (doc) =>
-    //    ({
-    //      id: doc.id,
-    //      ...doc.data(),
-    //    } as GalleryType)
-    //);
 
     setGalleries(document!.userGalleries);
   };

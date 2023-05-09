@@ -10,8 +10,8 @@ import {
 } from "firebase/firestore";
 import { v4 } from "uuid";
 
-import { auth } from "../firebase/clientApp";
-import { db } from "../firebase/clientApp";
+import { auth } from "../../firebase/clientApp";
+import { db } from "../../firebase/clientApp";
 
 type CreateNewGalleryType = (
   galleryName: string,

@@ -18,7 +18,6 @@ const useGallery = (galleryId: string) => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          console.log(docSnap.data());
           setGallery(docSnap!.data() as GalleryType);
         } else {
           throw new Error("No such document!");

@@ -4,7 +4,7 @@ import DisplayImage from "@/app/components/GalleryComponents/DisplayImage ";
 import LoadingSpinner from "@/app/components/higherOrderComponent/LoadingSpinner ";
 import ProtectedRoute from "@/app/components/higherOrderComponent/withAuth ";
 import { auth, db } from "@/app/firebase/clientApp ";
-import { FileType, GalleryType } from "@/app/firebase/types ";
+import { FileType, GalleryType, ImageType } from "@/app/firebase/types ";
 import getFirebaseGallery from "@/app/functions/FirebaseFunctions/getFirebaseGallery ";
 import getFirebaseImages from "@/app/functions/FirebaseFunctions/getFirebaseImages ";
 import {
@@ -17,7 +17,6 @@ import {
   ListItem,
   Text,
 } from "@chakra-ui/react";
-import { addDoc, collection } from "firebase/firestore";
 import { arrayUnion, doc } from "firebase/firestore";
 import { updateDoc } from "firebase/firestore";
 import {
@@ -49,7 +48,7 @@ const Gallery: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [gallery, setGallery] = useState<GalleryType[] | []>();
-  const [images, setImages] = useState<Image[]>([]);
+  const [images, setImages] = useState<ImageType[] | undefined>([]);
   const [files, setFiles] = useState<FileType[]>([]);
   const [showCancelSave, setCancelSave] = useState(false);
 
@@ -72,6 +71,7 @@ const Gallery: React.FC = () => {
   useEffect(() => {
     getGallery();
     getImages();
+    console.log("use effect ran");
 
     setLoading(false);
   }, []);
@@ -140,7 +140,8 @@ const Gallery: React.FC = () => {
         images: arrayUnion(imageObject),
       });
 
-      await getGallery();
+      //
+      await getImages();
     });
     setFiles([]);
     setCancelSave(false);
@@ -150,11 +151,14 @@ const Gallery: React.FC = () => {
     return <LoadingSpinner />;
   }
   //improvement: use firebase arrayRemove to update this!
+
   const deleteImage = async (imageId: string) => {
     const docRef = doc(db, "userImages", userId!);
     const storageRef = ref(storage, `galleries/${galleryId}/images/${imageId}`);
 
-    const updatedDocumentArray = images.filter((items) => items.id !== imageId);
+    const updatedDocumentArray = images?.filter(
+      (items) => items.id !== imageId
+    );
 
     await updateDoc(docRef, { images: updatedDocumentArray });
     await deleteObject(storageRef);
@@ -164,6 +168,7 @@ const Gallery: React.FC = () => {
   return (
     <>
       {/* This is the dropszone and onselect */}
+      {/* @ts-ignore */}
       <Heading> {gallery?.galleryName} </Heading>
       <Flex
         border="6px"

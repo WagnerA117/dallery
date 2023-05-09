@@ -19,17 +19,20 @@ export type FileType = {
 };
 
 export type GalleryType = {
-  id: string;
-  galleryName: string;
-  userId: string;
-  isFavourite: boolean;
-  description: string;
   createdAt: Timestamp;
+  description: string;
+  galleryName: string;
+  id: string;
+  isFavourite: boolean;
   updatedAt: Timestamp;
-  documentUrls: DocumentUrlObject[];
+  userId: string;
 };
 
 export type ImageType = {
+  createdAt: Timestamp;
+  downloadUrl: string;
+  galleryId: string;
   id: string;
+  isFavourite: boolean;
   name: string;
 };
