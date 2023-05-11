@@ -28,82 +28,85 @@ const SignInOptions = () => {
     newUserEmailLogin(email, password);
   };
 
+  {
+    /*<Button
+  sx={buttonStyle}
+  onClick={() => handleEmailLogin}
+  leftIcon={<ArrowRightIcon />}
+  >
+  Login
+  </Button>
+  <Button
+  sx={buttonStyle}
+  leftIcon={<AddIcon />}
+  onClick={() => handleNewUserEmailLogin}
+  >
+  Create Account
+  </Button>*/
+  }
+
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      padding="2%"
-      margin="1%"
-    >
-      <Flex
+    <>
+      <Box
+        display="flex"
         justifyContent="center"
         alignItems="center"
-        height="100vh"
-        flexDir="column"
-        bg="starNight.dark"
-        maxH="480"
-        maxW="480"
         padding="2%"
+        margin="1%"
       >
-        <Heading size="lg"> Sign in to continue</Heading>{" "}
-        <Button sx={buttonStyle} onClick={gitHubLogin}>
-          <Image
-            src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
-            alt=" This is the GitHub SignIn Option Icon"
-            height="30px"
-            width="100%"
-            margin="0.5em"
-          />{" "}
-          Sign In with GitHub
-        </Button>
-        <Button sx={buttonStyle} onClick={googleLogin}>
-          {" "}
-          <Image
-            src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg"
-            alt=" This is the Gmail Sign In Option"
-            height="30px"
-            width="100%"
-            margin="0.5em"
-          />{" "}
-          Sign In with Gmail
-        </Button>
-        {/* This is the password section  */}
-        <Heading size="5">Or Sign in with email and password</Heading>
-        <Input
-          size="md"
-          placeholder="Email"
-          margin="2%"
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        ></Input>
-        <Input
-          size="md"
-          placeholder="Password"
-          margin="2%"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        ></Input>
-        <Box>
-          <Button
-            sx={buttonStyle}
-            onClick={() => handleEmailLogin}
-            leftIcon={<ArrowRightIcon />}
-          >
-            Login
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+          flexDir="column"
+          bg="starNight.dark"
+          maxH="480"
+          maxW="480"
+          padding="2%"
+        >
+          <Heading size="lg"> Sign in to continue</Heading>{" "}
+          <Button sx={buttonStyle} onClick={gitHubLogin}>
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
+              alt=" This is the GitHub SignIn Option Icon"
+              height="30px"
+              width="100%"
+              margin="0.5em"
+            />{" "}
+            Sign In with GitHub
           </Button>
-          <Button
-            sx={buttonStyle}
-            leftIcon={<AddIcon />}
-            onClick={() => handleNewUserEmailLogin}
-          >
-            Create Account
+          <Button sx={buttonStyle} onClick={googleLogin}>
+            {" "}
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg"
+              alt=" This is the Gmail Sign In Option"
+              height="30px"
+              width="100%"
+              margin="0.5em"
+            />{" "}
+            Sign In with Gmail
           </Button>
-        </Box>
-      </Flex>
-    </Box>
+          {/* This is the password section  */}
+          {/*<Heading size="5">Or Sign in with email and password</Heading>*/}
+          {/*<Input
+            size="md"
+            placeholder="Email"
+            margin="2%"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          ></Input>
+          <Input
+            size="md"
+            placeholder="Password"
+            margin="2%"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          ></Input>*/}
+        </Flex>
+      </Box>
+    </>
   );
 };
 

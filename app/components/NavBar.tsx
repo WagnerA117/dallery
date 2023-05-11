@@ -11,6 +11,9 @@ const Navbar: React.FC = () => {
   const { currentUser, login, logout } = useContext(AuthContext);
   const router = useRouter();
   const handleLogout = () => {};
+  const handleLogin = () => {
+    router.push("/");
+  };
 
   const customButtonStyle = {
     backgroundColor: "starNight.medium",
@@ -57,7 +60,12 @@ const Navbar: React.FC = () => {
           {" "}
           Logout
         </Button>
-      ) : null}
+      ) : (
+        <Button bg="orange.500" onClick={handleLogin}>
+          {" "}
+          Login
+        </Button>
+      )}
       <ToggleThemeButton />
     </Flex>
   );

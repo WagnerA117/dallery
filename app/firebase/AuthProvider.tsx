@@ -10,7 +10,6 @@ import {
   signOut,
 } from "firebase/auth";
 import { User as FirebaseUser, UserCredential } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import React, {
   ReactNode,
   createContext,

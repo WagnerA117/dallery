@@ -11,6 +11,7 @@ import {
   Box,
   Button,
   Flex,
+  Grid,
   Heading,
   Image,
   List,
@@ -71,8 +72,6 @@ const Gallery: React.FC = () => {
   useEffect(() => {
     getGallery();
     getImages();
-    console.log("use effect ran");
-
     setLoading(false);
   }, []);
 
@@ -169,64 +168,66 @@ const Gallery: React.FC = () => {
     <>
       {/* This is the dropszone and onselect */}
       {/* @ts-ignore */}
-      <Heading> {gallery?.galleryName} </Heading>
-      <Flex
-        border="6px"
-        minHeight="120px"
-        bg="orange.400"
-        justifyContent="center"
-        alignItems="center"
-        margin="2%"
-      >
-        <Box {...getRootProps({})}>
-          <input {...getInputProps({})} />
-          {isDragActive ? (
-            <Text> Drop Em</Text>
-          ) : (
-            <Button bg="starNight.hover" color="starNight.dark">
-              Drag files or Select Upload
-            </Button>
-          )}
-        </Box>
-      </Flex>
+      <Box margin="2%">
+        <Heading width="100%" textAlign="center">
+          {" "}
+          {gallery?.galleryName}{" "}
+        </Heading>
+        <Flex
+          border="6px"
+          minHeight="120px"
+          bg="orange.400"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Box {...getRootProps({})}>
+            <input {...getInputProps({})} />
+            {isDragActive ? (
+              <Text> Drop Em</Text>
+            ) : (
+              <Button bg="starNight.hover" color="starNight.dark">
+                Drag files or Select Upload
+              </Button>
+            )}
+          </Box>
+        </Flex>
 
-      <Flex justifyContent="center" alignItems="center">
-        {showCancelSave ? (
-          <Flex>
-            <Button
-              onClick={() => {
-                setFiles([]);
-                setCancelSave(false);
-              }}
-              bg="orange.500"
-            >
-              {" "}
-              Cancel Upload
-            </Button>
-            <Button onClick={saveSelected} backgroundColor="starNight.light">
-              {" "}
-              Save Images
-            </Button>
-          </Flex>
-        ) : null}
-      </Flex>
+        <Flex justifyContent="center" alignItems="center">
+          {showCancelSave ? (
+            <Flex>
+              <Button
+                onClick={() => {
+                  setFiles([]);
+                  setCancelSave(false);
+                }}
+                bg="orange.500"
+              >
+                {" "}
+                Cancel Upload
+              </Button>
+              <Button onClick={saveSelected} backgroundColor="starNight.light">
+                {" "}
+                Save Images
+              </Button>
+            </Flex>
+          ) : null}
+        </Flex>
 
-      {/* This section allows the user to preview
+        {/* This section allows the user to preview
  	and check if they're selected the correct 
 	photos before they upload */}
 
-      <Flex justify="center" alignItems="center">
-        <List>
-          {files?.map((item) => (
-            <ListItem>
-              <Image src={item?.preview} />
-              <Button onClick={() => removeFile(item?.name)}> Remove</Button>
-            </ListItem>
-          ))}
-        </List>
-      </Flex>
+        <Flex justify="center" alignItems="center" margin="2%">
+          <List>
+            {files?.map((item) => (
+              <ListItem>
+                <Image src={item?.preview} />
+                <Button onClick={() => removeFile(item?.name)}> Remove</Button>
+              </ListItem>
+            ))}
+          </List>
+        </Flex>
 
-      <Box margin="2%">
         <DisplayImage images={images} deleteImage={deleteImage} />
       </Box>
     </>

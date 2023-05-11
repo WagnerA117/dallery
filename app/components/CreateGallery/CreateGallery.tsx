@@ -168,40 +168,39 @@ const CreateGallery: React.FC = () => {
 
       {/*<GalleryGrid />*/}
 
-      <Box display="flex" justifyContent="center" margin="2%">
-        <Grid
-          templateColumns="repeat(3, 1fr)"
-          gap={6}
-          border="10px"
-          borderColor="starNight.light"
-        >
-          {galleries?.map((gallery, index) => (
-            <>
-              <Box>
-                <Link
-                  href={{
-                    pathname: `./pages/galleries/${gallery.id}`,
-                    query: { id: gallery.id },
-                  }}
-                  key={gallery.id}
-                >
-                  <GalleryItem gallery={gallery} />
-                </Link>
+      <Grid
+        templateColumns="repeat(3, 1fr)"
+        gap={6}
+        border="10px"
+        borderColor="starNight.light"
+        padding="1rem"
+      >
+        {galleries?.map((gallery, index) => (
+          <>
+            <Box>
+              <Link
+                href={{
+                  pathname: `./pages/galleries/${gallery.id}`,
+                  query: { id: gallery.id },
+                }}
+                key={gallery.id}
+              >
+                <GalleryItem gallery={gallery} />
+              </Link>
 
-                <Button
-                  onClick={async () => {
-                    deleteGallery(gallery.id);
-                    await getFirebaseGalleries();
-                  }}
-                  width="100%"
-                >
-                  Remove
-                </Button>
-              </Box>
-            </>
-          ))}
-        </Grid>
-      </Box>
+              <Button
+                onClick={async () => {
+                  deleteGallery(gallery.id);
+                  await getFirebaseGalleries();
+                }}
+                width="100%"
+              >
+                Remove
+              </Button>
+            </Box>
+          </>
+        ))}
+      </Grid>
     </>
   );
 };

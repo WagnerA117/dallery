@@ -20,12 +20,12 @@ const withAuth = <P extends object>(
     //use currentUser
     const { currentUser, loading } = useContext(AuthContext);
 
-    useEffect(() => {
-      if (!currentUser) {
-        // Redirect to login page if user is not authenticated
-        router.push("/");
-      }
-    }, []);
+    //useEffect(() => {
+    //  if (!currentUser) {
+    //    // Redirect to login page if user is not authenticated
+    //    router.push("/");
+    //  }
+    //}, []);
 
     if (!currentUser) {
       if (loading) {
