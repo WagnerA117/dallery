@@ -24,25 +24,38 @@ import React, { useEffect, useState } from "react";
 const RandomArtWorks: React.FC = () => {
   const [currentArtwork, setCurrentArtwork] = useState(null);
 
+  //  const fetchArtwork = async () => {
+  //    const query ="https://api.artic.edu/api/v1/artworks?fields=id,title,artist_display,date_display,main_reference_number&classification_title=painting&limit=100&";
+
+  //    //const params = new URLSearchParams({
+  //    //  fields:
+  //    //    "id,image_id,title,artist_display,date_display,thumbnail,public_domain=true,classification_title",
+  //    //  limit: "100", // Change this value to retrieve more or fewer artworks
+  //    //});
+
+  //    const response = await fetch(query);
+
+  //    const data = await response.json();
+
+  //    console.log(data);
+
+  //    const randomIndex = Math.floor(Math.random() * data.data.length);
+  //    const artwork = data.data[randomIndex];
+  //    setCurrentArtwork(artwork);
+  //  };
+
   const fetchArtwork = async () => {
-    const query =
-      "https://api.artic.edu/api/v1/artworks?fields=id,title,artist_display,date_display,main_reference_number&classification_title=painting&limit=100&";
+    try {
+      const queryURl =
+        "https://api.artic.edu/api/v1/artworks/search?&query[term][is_public_domain]=true&fields=id,title,artist_display,date_display,main_reference_number,style_title,artwork_type_title,thumbnail&";
 
-    //const params = new URLSearchParams({
-    //  fields:
-    //    "id,image_id,title,artist_display,date_display,thumbnail,public_domain=true,classification_title",
-    //  limit: "100", // Change this value to retrieve more or fewer artworks
-    //});
+      const response = await fetch(queryURl);
+      const data = await response.json();
 
-    const response = await fetch(query);
-
-    const data = await response.json();
-
-    console.log(data);
-
-    const randomIndex = Math.floor(Math.random() * data.data.length);
-    const artwork = data.data[randomIndex];
-    setCurrentArtwork(artwork);
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {

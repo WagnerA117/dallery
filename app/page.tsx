@@ -25,7 +25,7 @@ export default function Home() {
         <div>
           {" "}
           <Heading margin="2%">Welcome to your gallery of Dreams</Heading>
-          {/*<RandomArtWorks />*/}
+          <RandomArtWorks />
         </div>
       ) : (
         <SignInOptions />

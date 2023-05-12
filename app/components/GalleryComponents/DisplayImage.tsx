@@ -54,7 +54,7 @@ const DisplayImage: React.FC<PropTypes> = ({ images, deleteImage }) => {
       </Modal>
 
       {/* This modal will delete the image  */}
-      <Modal
+      {/*<Modal
         isOpen={deleteImageModal.isOpen}
         onClose={deleteImageModal.onClose}
       >
@@ -72,7 +72,7 @@ const DisplayImage: React.FC<PropTypes> = ({ images, deleteImage }) => {
             <ModalFooter></ModalFooter>
           </ModalContent>
         </>
-      </Modal>
+      </Modal>*/}
 
       <Grid
         templateColumns={{
