@@ -48,7 +48,7 @@ const Gallery: React.FC = () => {
   const galleryId = searchParams.get("id");
 
   const [loading, setLoading] = useState(true);
-  const [gallery, setGallery] = useState<GalleryType[] | []>();
+  const [gallery, setGallery] = useState<GalleryType | []>();
   const [images, setImages] = useState<ImageType[] | undefined>([]);
   const [files, setFiles] = useState<FileType[]>([]);
   const [showCancelSave, setCancelSave] = useState(false);
