@@ -25,8 +25,16 @@ const RandomArtWorks: React.FC = () => {
   const [response, setResponse] = useState(null);
 
   const fetchArtwork = async () => {
+    const maxPage = 56581;
+    const minPage = 1;
+
+    const randomPage =
+      Math.floor(Math.random() * (maxPage - minPage + 1)) + minPage;
+
+    console.log(randomPage, "this is the random page");
+
     const request = await fetch(
-      "https://api.artic.edu/api/v1/artworks/search?fields=id,title,artist_display,date_display,main_reference_number&query[term][is_public_domain]=true&page=2"
+      "https://api.artic.edu/api/v1/artworks/search?fields=id,title,artist_display,date_display,main_reference_number&query[term][is_public_domain]=true"
     ).then((response) => response.json());
 
     console.log(request, "this is the request made now");
