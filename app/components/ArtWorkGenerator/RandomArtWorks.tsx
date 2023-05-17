@@ -25,23 +25,58 @@ const RandomArtWorks: React.FC = () => {
   const [response, setResponse] = useState(null);
 
   const fetchArtwork = async () => {
-    const maxPage = 56581;
-    const minPage = 1;
-
-    const randomPage =
+    const minPage = 1; // Minimum page number
+    const maxPage = 100; // Maximum page number
+    const randomNumber =
       Math.floor(Math.random() * (maxPage - minPage + 1)) + minPage;
 
-    console.log(randomPage, "this is the random page");
+    //This will chose a random painting out of the response of 10;
+    const randomIndex = Math.floor(Math.random() * 10);
+
+    console.log(randomNumber, "this is the random page number");
+
+    //const testReq = await fetch(
+    //  "https://api.artic.edu/api/v1/artworks/search?fields=id,title,artist_display,date_display,main_reference_number&query[term][is_public_domain]=true"
+    //).then((response) => response.json());
+
+    //console.log(testReq, "this is the test request");
 
     const request = await fetch(
-      "https://api.artic.edu/api/v1/artworks/search?fields=id,title,artist_display,date_display,main_reference_number&query[term][is_public_domain]=true"
-    ).then((response) => response.json());
+      `https://api.artic.edu/api/v1/artworks/search`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: {
+            term: {
+              is_public_domain: true,
+            },
+          },
+          fields: [
+            "artist_display",
+            "artist_title",
+            "classification_id",
+            "classification_title",
+            "date_display",
+            "is_public_domain",
+            "id",
+            "image_id",
+            "style_title",
+            "style_id",
+            "subject",
+            "main_reference_number",
+            "title",
+          ],
+          page: randomNumber,
+        }),
+      }
+    );
 
-    console.log(request, "this is the request made now");
+    const response = await request.json();
 
-    setResponse(request);
-
-    setCurrentArtwork(request.data);
+    setCurrentArtwork(response.data[randomIndex]);
   };
 
   const newPage = () => {};
@@ -51,10 +86,7 @@ const RandomArtWorks: React.FC = () => {
 
   const handleClick = () => {
     fetchArtwork();
-    console.log(currentArtwork, "this is the current artwork");
   };
-
-  console.log(currentArtwork, "this is the current artwork");
 
   if (!currentArtwork) {
     return (
@@ -63,6 +95,8 @@ const RandomArtWorks: React.FC = () => {
       </div>
     );
   }
+
+  console.log(currentArtwork, "this is the current artwork");
 
   //https://www.artic.edu/iiif/2/{identifier}/{region}/{size}/{rotation}/{quality}.{format}
   const imageUrl = `https://www.artic.edu/iiif/2/${currentArtwork["image_id"]}/full/843,/0/default.jpg`;
