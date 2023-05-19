@@ -75,7 +75,7 @@ const CreateGallery: React.FC = () => {
 
     const document = docSnap.data();
 
-    setGalleries(document!.userGalleries);
+    setGalleries(document?.userGalleries);
   };
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const CreateGallery: React.FC = () => {
     }
     setIsLoading(true);
     //Firebase call to add the gallery to the collection
-    addFirebaseGallery(galleryName, galleryDescription);
+    await addFirebaseGallery(galleryName, galleryDescription);
     //Manage the stateful variables in the file
     setGalleryName("");
     setGalleryDescription("");
