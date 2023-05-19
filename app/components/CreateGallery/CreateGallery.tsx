@@ -92,10 +92,11 @@ const CreateGallery: React.FC = () => {
     //Firebase call to add the gallery to the collection
     await addFirebaseGallery(galleryName, galleryDescription);
     //Manage the stateful variables in the file
+    await getFirebaseGalleries();
     setGalleryName("");
     setGalleryDescription("");
     setToggleGalleryModal(false);
-    await getFirebaseGalleries();
+
     setIsLoading(false);
 
     //bugfix: success should only run on sucessful creation of gallery
@@ -111,7 +112,7 @@ const CreateGallery: React.FC = () => {
 
     await updateDoc(docRef, { userGalleries: updatedDocumentArray });
 
-    getFirebaseGalleries();
+    await getFirebaseGalleries();
   };
 
   if (isLoading) {
