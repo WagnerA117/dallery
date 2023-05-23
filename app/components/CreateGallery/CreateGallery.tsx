@@ -121,7 +121,6 @@ const CreateGallery: React.FC = () => {
 
   return (
     <>
-      {/*<CreateGalleryModal  />*/}
       <Box width="100%" display="flex" justifyContent="center">
         <Button
           bg="starNight.medium"
@@ -166,8 +165,6 @@ const CreateGallery: React.FC = () => {
           </Modal>
         </Box>
       </Box>
-
-      {/*<GalleryGrid />*/}
 
       <Grid
         templateColumns="repeat(3, 1fr)"
