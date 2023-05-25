@@ -1,45 +1,23 @@
 "use client";
 
-import { Button, Image, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Skeleton } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 
-//const getArtsyArtworkdata = async () => {
-//  const response = await fetch(`https://api.artsy.net/api/artworks`, {
-//    headers: {
-//      "X-Xapp-Token": process.env.NEXT_PUBLIC_ARTSY_APP_TOKEN!,
-//      Accept: "application/vnd.artsy-v2+json",
-//    },
-//  });
-
-//  const data = await response.json();
-
-//  console.log(data._embedded);
-
-//  const artwork = data[0];
-
-//  return artwork;
-//};
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const RandomArtWorks: React.FC = () => {
   const [currentArtwork, setCurrentArtwork] = useState(null);
-  const [response, setResponse] = useState(null);
 
-  const fetchArtwork = async () => {
+  //This will chose a random painting out of the response of 10;
+  const randomIndex = Math.floor(Math.random() * 10);
+
+  const fetchRandomArtwork = async () => {
     const minPage = 1; // Minimum page number
     const maxPage = 100; // Maximum page number
     const randomNumber =
       Math.floor(Math.random() * (maxPage - minPage + 1)) + minPage;
-
-    //This will chose a random painting out of the response of 10;
-    const randomIndex = Math.floor(Math.random() * 10);
-
-    console.log(randomNumber, "this is the random page number");
-
-    //const testReq = await fetch(
-    //  "https://api.artic.edu/api/v1/artworks/search?fields=id,title,artist_display,date_display,main_reference_number&query[term][is_public_domain]=true"
-    //).then((response) => response.json());
-
-    //console.log(testReq, "this is the test request");
 
     const request = await fetch(
       `https://api.artic.edu/api/v1/artworks/search`,
@@ -76,38 +54,76 @@ const RandomArtWorks: React.FC = () => {
 
     const response = await request.json();
 
-    setCurrentArtwork(response.data[randomIndex]);
+    return response;
   };
 
-  const newPage = () => {};
-  useEffect(() => {
-    fetchArtwork();
-  }, []);
+  const {
+    data: artwork,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["randomArtwork"],
+    queryFn: fetchRandomArtwork,
+  });
 
   const handleClick = () => {
-    fetchArtwork();
+    refetch();
   };
 
-  if (!currentArtwork) {
-    return (
-      <div>
-        <Spinner></Spinner>
-      </div>
-    );
+  if (isLoading) {
+    return <LoadingSpinner />;
   }
 
-  console.log(currentArtwork, "this is the current artwork");
+  const randomArtwork = artwork?.data[randomIndex];
 
-  //https://www.artic.edu/iiif/2/{identifier}/{region}/{size}/{rotation}/{quality}.{format}
-  const imageUrl = `https://www.artic.edu/iiif/2/${currentArtwork["image_id"]}/full/843,/0/default.jpg`;
+  //TODO: check about creating a basic default image sizxe for images
+  //TODO: use the main colour background to reactivly set the background colour of the div should it overflow
+
+  const imageUrl = `https://www.artic.edu/iiif/2/${randomArtwork["image_id"]}/full/843,/0/default.jpg`;
 
   return (
-    <div>
-      <Image src={imageUrl} alt="this is the alt"></Image>
+    <>
+      <Box>
+        <Flex alignItems="center" direction="column">
+          {isFetching ? (
+            <Skeleton
+              isLoaded={!isLoading}
+              maxH="70vh"
+              minH="70vh"
+              bg="starNight.dark"
+              width="100%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <LoadingSpinner />
 
-      <Button onClick={handleClick}>Generate artwork</Button>
-      <Button onClick={newPage}>New Page</Button>
-    </div>
+              <Button onClick={handleClick}>Find a random artwork</Button>
+            </Skeleton>
+          ) : (
+            <Flex
+              direction="column"
+              alignItems="center"
+              bg={"starNight.dark"}
+              width="100%"
+            >
+              <Image
+                maxH="70vh"
+                minH="70vh"
+                src={imageUrl}
+                alt="this is the alt"
+                padding="2%"
+                objectFit={"contain"}
+              />
+            </Flex>
+          )}
+        </Flex>
+      </Box>
+      <Button onClick={handleClick}>Find a random artwork</Button>
+    </>
   );
 };
 

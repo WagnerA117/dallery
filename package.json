@@ -13,9 +13,12 @@
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@tanstack/react-query": "^4.29.7",
+    "@tanstack/react-query-devtools": "^4.29.7",
     "@types/node": "18.15.3",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "axios": "^1.4.0",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "firebase": "^9.18.0",
@@ -26,11 +29,13 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-firebase-hooks": "^5.1.1",
+    "react-query-devtools": "^2.6.3",
     "typescript": "4.9.5",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/react-query": "^1.2.9",
     "@types/uuid": "^9.0.1",
     "prettier": "^2.8.7"
   }
