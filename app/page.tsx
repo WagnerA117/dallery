@@ -1,6 +1,6 @@
 "use client";
 
-import { Heading } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import { useContext } from "react";
 
 import RandomArtWorks from "./components/ArtWorkGenerator/RandomArtWorks";
@@ -22,11 +22,13 @@ export default function Home() {
   return (
     <>
       {currentUser ? (
-        <div>
+        <Box>
           {" "}
-          <Heading margin="2%">Welcome to your gallery of Dreams</Heading>
+          <Heading textAlign="center" width="100%" margin="2%">
+            Welcome to Dallery
+          </Heading>
           <RandomArtWorks />
-        </div>
+        </Box>
       ) : (
         <SignInOptions />
       )}
