@@ -49,7 +49,7 @@ const Gallery: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [gallery, setGallery] = useState<GalleryType | []>();
-  const [images, setImages] = useState<ImageType[] | undefined>([]);
+  const [images, setImages] = useState<ImageType[]>();
   const [files, setFiles] = useState<FileType[]>([]);
   const [showCancelSave, setCancelSave] = useState(false);
 
@@ -155,13 +155,17 @@ const Gallery: React.FC = () => {
     const docRef = doc(db, "userImages", userId!);
     const storageRef = ref(storage, `galleries/${galleryId}/images/${imageId}`);
 
-    const updatedDocumentArray = images?.filter(
-      (items) => items.id !== imageId
-    );
+    if (imageId) {
+      const updatedDocumentArray = images?.filter(
+        (items) => items.id !== imageId
+      );
 
-    await updateDoc(docRef, { images: updatedDocumentArray });
-    await deleteObject(storageRef);
-    getImages();
+      await updateDoc(docRef, { images: updatedDocumentArray });
+      await deleteObject(storageRef);
+      getImages();
+    } else {
+      console.log("No image id");
+    }
   };
 
   return (

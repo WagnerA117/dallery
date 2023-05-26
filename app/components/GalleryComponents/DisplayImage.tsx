@@ -1,6 +1,12 @@
 import { GalleryType, ImageType } from "@/app/firebase/types ";
 import { DocumentUrlObject } from "@/app/firebase/types ";
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button,
   Flex,
@@ -12,23 +18,33 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { on } from "events";
+import React, { useRef, useState } from "react";
 
 type PropTypes = {
-  gallery: GalleryType;
-  images: ImageType[];
-  deleteImage: (id: string) => void;
+  gallery?: GalleryType;
+  images?: ImageType[];
+  deleteImage: (id: string | undefined) => void;
 };
 
 const DisplayImage: React.FC<PropTypes> = ({ images, deleteImage }) => {
-  const [viewImage, setViewImage] = useState<DocumentUrlObject>();
+  const [viewImage, setViewImage] = useState<DocumentUrlObject | undefined>();
+  const [removeImage, setRemoveImage] = useState<
+    DocumentUrlObject | undefined
+  >();
+
+  const cancelRef = useRef(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const deleteImageModal = useDisclosure();
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
+  } = useDisclosure();
 
   return (
     <>
-      {/* This is to open up the image and view it more fully */}
+      {/* This is to opens up the image*/}
 
       <Modal isOpen={isOpen} onClose={onClose} size="full">
         <ModalOverlay />
@@ -53,33 +69,52 @@ const DisplayImage: React.FC<PropTypes> = ({ images, deleteImage }) => {
         </ModalContent>
       </Modal>
 
-      {/* This modal will delete the image  */}
-      {/*<Modal
-        isOpen={deleteImageModal.isOpen}
-        onClose={deleteImageModal.onClose}
+      <AlertDialog
+        isOpen={isDeleteOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
       >
-        <>
-          <ModalOverlay />
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Customer
+            </AlertDialogHeader>
 
-          <ModalContent>
-            {console.log("deleteImageModal", deleteImageModal)}
-            <Button bg="red.300" onClick={deleteImage(id)}>
-              Delete
-            </Button>
-            <Button bg="orange.300" onClick={deleteImageModal.onClose}>
-              Cancel
-            </Button>
-            <ModalFooter></ModalFooter>
-          </ModalContent>
-        </>
-      </Modal>*/}
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button
+                ref={cancelRef}
+                onClick={() => {
+                  setRemoveImage(undefined);
+                  onDeleteClose();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  deleteImage(removeImage!.id);
+                  onDeleteClose();
+                }}
+                ml={3}
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
 
       <Grid
         templateColumns={{
           base: "repeat(1, 1fr)",
-          md: "repeat(3, 1fr)",
-          lg: "repeat(4, 1fr)",
-          xl: "repeat(5, 1fr)",
+          md: "repeat(2, 1fr)",
+          lg: "repeat(3, 1fr)",
+          xl: "repeat(4, 1fr)",
         }}
         gap={4}
       >
@@ -103,7 +138,10 @@ const DisplayImage: React.FC<PropTypes> = ({ images, deleteImage }) => {
                 size="md"
                 margin="0.5rem"
                 w="25%"
-                onClick={() => deleteImageModal.onOpen()}
+                onClick={() => {
+                  onDeleteOpen();
+                  setRemoveImage(image as any);
+                }}
               >
                 {" "}
                 Remove

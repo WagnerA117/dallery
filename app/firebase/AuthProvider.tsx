@@ -69,7 +69,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           const user = result.user;
           resolve(result);
 
-          console.log(user);
           // redux action? --> dispatch({ type: SET_USER, user });
         })
         .catch((error) => {
@@ -142,7 +141,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           const user = result.user;
           resolve(result);
 
-          console.log(user);
           // redux action? --> dispatch({ type: SET_USER, user });
         })
         .catch((error) => {
