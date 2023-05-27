@@ -8,22 +8,22 @@ import { theme } from "./chakra/theme";
 import Navbar from "./components/NavBar";
 import { AuthProvider } from "./firebase/AuthProvider";
 //@ts-ignore //Todo: Check import ideas
-import TanStackProviders from "./utils/tanstackProviders";
+import TanStackProvider from "./utils/tanStackProvider";
 
 function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <TanStackProviders>
-          <ChakraProvider theme={theme}>
-            <AuthProvider>
+        <ChakraProvider theme={theme}>
+          <AuthProvider>
+            <TanStackProvider>
               <>
                 <Navbar />
-                <Box>{children}</Box>
+                {children}
               </>
-            </AuthProvider>
-          </ChakraProvider>
-        </TanStackProviders>
+            </TanStackProvider>
+          </AuthProvider>
+        </ChakraProvider>
       </body>
     </html>
   );

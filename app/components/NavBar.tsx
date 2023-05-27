@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { async } from "@firebase/util";
 import Link from "next/link";

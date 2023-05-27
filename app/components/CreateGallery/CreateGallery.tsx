@@ -173,15 +173,16 @@ const CreateGallery: React.FC = () => {
         borderColor="starNight.light"
         padding="1rem"
       >
+        {/* Refactort this into a component */}
         {galleries?.map((gallery, index) => (
           <>
-            <Box>
+            <Box key={index}>
               <Link
                 href={{
                   pathname: `./pages/galleries/${gallery.id}`,
                   query: { id: gallery.id },
                 }}
-                key={gallery.id}
+                key={index + 1}
               >
                 <GalleryItem gallery={gallery} />
               </Link>

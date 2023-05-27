@@ -1,3 +1,5 @@
+"use client";
+
 import { QueryClient } from "@tanstack/react-query";
 import { cache } from "react";
 

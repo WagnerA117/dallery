@@ -2,7 +2,6 @@
 
 import { Box, Button, Flex, Image, Skeleton } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
@@ -89,40 +88,43 @@ const RandomArtWorks: React.FC = () => {
       <Box>
         <Flex alignItems="center" direction="column">
           {isFetching ? (
-            <Skeleton
-              isLoaded={!isLoading}
-              maxH="70vh"
-              minH="70vh"
-              bg="starNight.dark"
-              width="100%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <LoadingSpinner />
-
-              <Button onClick={handleClick}>Find a random artwork</Button>
-            </Skeleton>
-          ) : (
-            <Flex
-              direction="column"
-              alignItems="center"
-              bg={"starNight.dark"}
-              width="100%"
-            >
-              <Image
+            <>
+              <Skeleton
+                isLoaded={!isLoading}
                 maxH="70vh"
                 minH="70vh"
-                src={imageUrl}
-                alt="this is the alt"
-                padding="2%"
-                objectFit={"contain"}
-              />
-            </Flex>
+                bg="starNight.dark"
+                width="50%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <LoadingSpinner />
+              </Skeleton>
+              <Button onClick={handleClick}>Find a random artwork</Button>
+            </>
+          ) : (
+            <>
+              <Flex
+                direction="column"
+                alignItems="center"
+                bg={"starNight.dark"}
+                width="50%"
+              >
+                <Image
+                  maxH="70vh"
+                  minH="70vh"
+                  src={imageUrl}
+                  alt="this is the alt"
+                  padding="2%"
+                  objectFit={"contain"}
+                />
+              </Flex>
+              <Button onClick={handleClick}>Find a random artwork</Button>
+            </>
           )}
         </Flex>
       </Box>
-      <Button onClick={handleClick}>Find a random artwork</Button>
     </>
   );
 };
