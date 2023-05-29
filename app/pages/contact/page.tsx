@@ -1,20 +1,48 @@
 "use client";
 
+import { sendEmail } from "@/app/functions/sendEmail ";
 import {
   Box,
   Button,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
   Input,
   Textarea,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { use } from "react";
+
+interface EmailValuesType {
+  name: string;
+  emailAddress: string;
+  emailContent: string;
+}
+
+//1) Create custom hook outside of body?
+const usePostContact = () => {
+  return useMutation({
+    mutationKey: ["contact"],
+    mutationFn: async (values: EmailValuesType) => {
+      const result = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      return result.json();
+    },
+  });
+};
 
 const ContactPage = () => {
+  // 2) destructuring the values needed from
+  //the custom hook
+  const { mutate: postContact } = usePostContact();
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -23,7 +51,13 @@ const ContactPage = () => {
     },
     onSubmit: (values) => {
       if (formik.values.emailContent.length > 0) {
-        console.log(values, "Sending email");
+        console.log("email call requested", values);
+        //3)call the custom hook
+        postContact(values, {
+          onSuccess: () => {
+            console.log("email sent"!);
+          },
+        });
       } else console.log("no info");
     },
   });
@@ -31,24 +65,6 @@ const ContactPage = () => {
   const handleCancel = () => {
     formik.resetForm();
   };
-
-  const sendEmail = async (data) =>
-    fetch("../api/sendEmail", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-
-  //  const {
-  //    data: queryData,
-  //    error,
-  //    isLoading,
-  //  } = useQuery({
-  //    queryKey: "contact",
-  //    queryFn: sendEmail,
-  //  });
 
   return (
     <>
@@ -76,9 +92,9 @@ const ContactPage = () => {
 
           <FormLabel>Email</FormLabel>
           <Input
-            id="name"
-            name="name"
-            value={formik.values.name}
+            id="emailAddress"
+            name="emailAddress"
+            value={formik.values.emailAddress}
             onChange={formik.handleChange}
           ></Input>
 
@@ -96,20 +112,18 @@ const ContactPage = () => {
             />
           </FormControl>
 
-          <Flex marginTop={4}>
-            <Button
-              type="submit"
-              bg="green.400"
-              disabled={formik.values.emailContent.length < 2}
-            >
-              {" "}
-              Let loose the digital ravens!
-            </Button>
-            <Button bg="red.400" onClick={handleCancel}>
-              {" "}
-              Cancel
-            </Button>
-          </Flex>
+          <Button
+            type="submit"
+            bg="green.400"
+            disabled={formik.values.emailContent.length < 2}
+          >
+            {" "}
+            Let loose the digital ravens!
+          </Button>
+          <Button bg="red.400" onClick={handleCancel}>
+            {" "}
+            Cancel
+          </Button>
         </form>
       </Box>
     </>

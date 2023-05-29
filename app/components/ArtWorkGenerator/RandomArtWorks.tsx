@@ -1,15 +1,10 @@
-"use client";
-
 import { Box, Button, Flex, Image, Skeleton } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { ref } from "firebase/storage";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const RandomArtWorks: React.FC = () => {
-  const [currentArtwork, setCurrentArtwork] = useState(null);
-
   //This will chose a random painting out of the response of 10;
   const randomIndex = Math.floor(Math.random() * 10);
 
@@ -61,8 +56,6 @@ const RandomArtWorks: React.FC = () => {
     data: artwork,
     isLoading,
     isFetching,
-    isError,
-    error,
     refetch,
   } = useQuery({
     queryKey: ["randomArtwork"],
@@ -71,6 +64,10 @@ const RandomArtWorks: React.FC = () => {
 
   const handleClick = () => {
     refetch();
+  };
+
+  const handleRouteCall = () => {
+    console.log("route call");
   };
 
   if (isLoading) {
@@ -123,6 +120,7 @@ const RandomArtWorks: React.FC = () => {
         </Flex>
       </Box>
       <Button onClick={handleClick}>Find a random artwork</Button>
+      <Button onClick={handleRouteCall}>Find a random artwork</Button>
     </>
   );
 };
