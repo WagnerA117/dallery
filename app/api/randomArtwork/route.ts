@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 export const POST = async (request: Request) => {
   console.log("this was requested");
   try {
+    const randomIndex = Math.floor(Math.random() * 10);
     const minPage = 1; // Minimum page number
     const maxPage = 100; // Maximum page number
     const randomNumber =
@@ -42,9 +43,16 @@ export const POST = async (request: Request) => {
     );
 
     const response = await request.json();
-    console.log(response, "response from random artwork");
+    const randomArtwork = response?.data[randomIndex];
 
-    return NextResponse.json(response);
+    console.log(response, "response");
+
+    console.log(
+      NextResponse.json({ randomArtwork }),
+      " this is the random artwork "
+    );
+
+    return NextResponse.json({ randomArtwork });
   } catch (err) {
     return NextResponse.error();
   }
