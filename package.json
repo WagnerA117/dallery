@@ -25,6 +25,7 @@
     "formik": "^2.2.9",
     "framer-motion": "^10.3.1",
     "next": "13.2.4",
+    "nodemailer": "^6.9.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/nodemailer": "^6.4.8",
     "@types/react-query": "^1.2.9",
     "@types/uuid": "^9.0.1",
     "prettier": "^2.8.7"

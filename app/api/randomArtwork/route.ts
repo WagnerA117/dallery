@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const POST = async (request: Request) => {
+export const GET = async (request: Request) => {
   console.log("this was requested");
   try {
     const randomIndex = Math.floor(Math.random() * 10);
@@ -45,14 +45,7 @@ export const POST = async (request: Request) => {
     const response = await request.json();
     const randomArtwork = response?.data[randomIndex];
 
-    console.log(response, "response");
-
-    console.log(
-      NextResponse.json({ randomArtwork }),
-      " this is the random artwork "
-    );
-
-    return NextResponse.json({ randomArtwork });
+    return NextResponse.json(randomArtwork);
   } catch (err) {
     return NextResponse.error();
   }
