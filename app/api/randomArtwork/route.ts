@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 export const GET = async (request: Request) => {
-  console.log("this was requested");
   try {
     const randomIndex = Math.floor(Math.random() * 10);
     const minPage = 1; // Minimum page number

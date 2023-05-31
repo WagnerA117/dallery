@@ -2,21 +2,11 @@ import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-//export default function handler(req: NextApiRequest, res: NextResponse) {
-//  if (req.method === "POST") {
-//    // Process a POST request
-//    console.log(req.body);
-//	return res.json()
-//  }
-//}
-
 export async function POST(request: Request, response: NextResponse) {
   //this will be the node mail
 
   const result = await request.json();
   const { name, emailAddress, emailContent } = result;
-
-  console.log(result, "this is the result");
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -34,11 +24,14 @@ export async function POST(request: Request, response: NextResponse) {
       replyTo: emailAddress,
       subject: `New Message from ${name} about Dallery`,
       text: emailContent,
-      html: `<p>${emailContent}</p>`,
+      html: `
+	  <div>
+		<h1>New Message from ${name} about Dallery</h1>
+		<p>${emailContent}</p>
+	</div>
+	  `,
     });
-    console.log("this is the mailer");
 
-    //do stuff with node mailer use your own email secret here
     return NextResponse.json({ message: "Email Sent!" });
   } catch (err) {
     return NextResponse.json({ message: "Email Failed!" });

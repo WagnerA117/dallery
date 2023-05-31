@@ -51,11 +51,11 @@ const ContactPage = () => {
     },
     onSubmit: (values) => {
       if (formik.values.emailContent.length > 0) {
-        console.log("email call requested", values);
         //3)call the custom hook
         postContact(values, {
           onSuccess: () => {
             console.log("email sent"!);
+            formik.resetForm();
           },
         });
       } else console.log("no info");
