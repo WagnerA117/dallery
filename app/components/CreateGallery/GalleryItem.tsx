@@ -8,13 +8,15 @@ interface GalleryItemProps {
 
 const GalleryItem: React.FC<GalleryItemProps> = ({ gallery }) => {
   const {
-    //@ts-ignore
-    galleryName,
+    // use underscore to whenit's expected to be unused
+    galleryName: _,
   } = gallery;
 
   return (
     <Card>
-      <Heading>{galleryName}</Heading>
+      <Heading textAlign="center" size="md">
+        {gallery.galleryName}
+      </Heading>
       <Image
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Vincent_van_Gogh_-_Almond_blossom_-_Google_Art_Project.jpg/540px-Vincent_van_Gogh_-_Almond_blossom_-_Google_Art_Project.jpg"
         alt="Van Gogh Almond Blossom Painting"

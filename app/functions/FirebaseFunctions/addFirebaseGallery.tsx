@@ -47,7 +47,6 @@ const addFirebaseGallery: CreateNewGalleryType = async (
       await updateDoc(docRef, {
         userGalleries: arrayUnion(newGallery),
       });
-
       return newGallery;
     } else {
       const createGalleryDoc = await setDoc(docRef, {
@@ -58,28 +57,10 @@ const addFirebaseGallery: CreateNewGalleryType = async (
         userId,
         userGalleries: [],
       });
-
       return createGalleryDoc;
     }
-
-    //await setDoc(doc(db, "galleries", userId), {
-    //  name: galleryName,
-    //  description: description,
-    //  ownerId: auth.currentUser?.uid,
-    //  createdAt: new Date(),
-    //  updatedAt: new Date(),
-    //});
-
-    //const newGallery = await setDoc(doc(db, "galleries", userId), {
-    //  name: galleryName,
-    //  description: description,
-    //  ownerId: auth.currentUser?.uid,
-    //  createdAt: new Date(),
-    //  updatedAt: new Date(),
-    //  downloadUrls: [],
-    //});
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 

@@ -1,5 +1,6 @@
 "use client";
 
+import useCustomToast from "@/app/customHooks/useCustomToast ";
 import { auth, db } from "@/app/firebase/clientApp ";
 import { GalleryType } from "@/app/firebase/types ";
 import { AddIcon } from "@chakra-ui/icons";
@@ -16,17 +17,16 @@ import {
   ModalOverlay,
   Spinner,
   VStack,
-  useToast,
 } from "@chakra-ui/react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import addFirebaseGallery from "../../functions/FirebaseFunctions/addFirebaseGallery";
+import Link from "../Link/Link";
 import GalleryItem from "./GalleryItem";
 
 const CreateGallery: React.FC = () => {
-  const toast = useToast();
+  const showToast = useCustomToast();
 
   const [toggleGalleryModal, setToggleGalleryModal] = useState(false);
   const [galleryName, setGalleryName] = useState("");
@@ -46,29 +46,6 @@ const CreateGallery: React.FC = () => {
     return setToggleGalleryModal(false);
   };
 
-  function EmptyInfoToast() {
-    return toast({
-      title: "Add a Title Description",
-      description:
-        "Make sure to include a name and description for your gallery!",
-      status: "warning",
-      duration: 9000,
-      isClosable: true,
-      position: "top",
-    });
-  }
-
-  const SuccessToast = () => {
-    return toast({
-      title: "Success!",
-      description: "Your gallery has been created!",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-      position: "top",
-    });
-  };
-
   const getFirebaseGalleries = async () => {
     const docRef = doc(db, "galleries", userId!);
     const docSnap = await getDoc(docRef);
@@ -86,21 +63,27 @@ const CreateGallery: React.FC = () => {
 
   const createNewGallery = async () => {
     if (!galleryName) {
-      return EmptyInfoToast();
     }
+
+    //TODO: Better handling of potential errors over here
     setIsLoading(true);
     //Firebase call to add the gallery to the collection
     await addFirebaseGallery(galleryName, galleryDescription);
+
     //Manage the stateful variables in the file
-    await getFirebaseGalleries();
+
+    await getFirebaseGalleries().catch((err) => {
+      showToast(
+        "Error",
+        "There was an error creating your gallery, please try again",
+        "error"
+      );
+    });
     setGalleryName("");
     setGalleryDescription("");
     setToggleGalleryModal(false);
 
     setIsLoading(false);
-
-    //bugfix: success should only run on sucessful creation of gallery
-    //SuccessToast();
   };
 
   const deleteGallery = async (galleryId: string) => {
@@ -167,36 +150,33 @@ const CreateGallery: React.FC = () => {
       </Box>
 
       <Grid
-        templateColumns="repeat(3, 1fr)"
+        templateColumns="repeat(4, 1fr)"
         gap={6}
         border="10px"
         borderColor="starNight.light"
         padding="1rem"
       >
-        {galleries?.map((gallery, index) => (
-          <>
-            <Box>
-              <Link
-                href={{
-                  pathname: `./pages/galleries/${gallery.id}`,
-                  query: { id: gallery.id },
-                }}
-                key={gallery.id}
-              >
-                <GalleryItem gallery={gallery} />
-              </Link>
+        {galleries?.map((gallery) => (
+          <Box key={gallery.id}>
+            <Link
+              href={{
+                pathname: `./pages/galleries/${gallery.id}`,
+                query: { id: gallery.id },
+              }}
+            >
+              <GalleryItem gallery={gallery} />
+            </Link>
 
-              <Button
-                onClick={async () => {
-                  deleteGallery(gallery.id);
-                  await getFirebaseGalleries();
-                }}
-                width="100%"
-              >
-                Remove
-              </Button>
-            </Box>
-          </>
+            <Button
+              onClick={async () => {
+                deleteGallery(gallery.id);
+                await getFirebaseGalleries();
+              }}
+              width="100%"
+            >
+              Remove
+            </Button>
+          </Box>
         ))}
       </Grid>
     </>

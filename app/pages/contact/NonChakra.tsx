@@ -72,21 +72,23 @@ const ContactPage = () => {
 
   return (
     <>
-      <Box margin={4}>
-        <Heading marginBottom={4}> Get in touch!</Heading>
+      <div>
+        <h1> Get in touch!</h1>
 
-        <Heading size="md" maxW="60%">
+        <h1>
           <p>
             Whether its an idea for a feature, a bug you've found, suggestions
             or would just like to chat about art. I'd love to hear from you!
           </p>
           <br />
-        </Heading>
-      </Box>
+        </h1>
+      </div>
 
       <div>
         <form onSubmit={formik.handleSubmit}>
-          <FormControl>
+          <input type="email"></input>
+
+          {/*<FormControl>
             <FormLabel htmlFor="name">Name</FormLabel>
             <Input
               id="name"
@@ -128,7 +130,8 @@ const ContactPage = () => {
           </Button>
           <Button bg="red.400" onClick={handleCancel}>
             Cancel
-          </Button>
+          </Button>*/}
+          <button type="submit"> Submit</button>
         </form>
       </div>
 
