@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Image, Skeleton } from "@chakra-ui/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 

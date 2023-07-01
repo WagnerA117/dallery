@@ -5,8 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
 function TanStackProviders({ children }: React.PropsWithChildren) {
-  const [client] = React.useState(
-    new QueryClient({ defaultOptions: { queries: { staleTime: 5000 } } })
+  //Don't need to update state, remember to USEMMEMEMOMSMSO
+  const client = React.useMemo(
+    () => new QueryClient({ defaultOptions: { queries: { staleTime: 5000 } } }),
+    []
   );
 
   return (

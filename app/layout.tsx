@@ -1,10 +1,9 @@
 "use client";
 
-import { ChakraProvider } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import React from "react";
 
-import { theme } from "./chakra/theme";
+import { Providers } from "./chakra/ChakraProviders";
 import Navbar from "./components/NavBar";
 import { AuthProvider } from "./firebase/AuthProvider";
 //@ts-ignore //Todo: Check import ideas
@@ -15,14 +14,11 @@ function RootLayout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body>
         <TanStackProviders>
-          <ChakraProvider theme={theme}>
-            <AuthProvider>
-              <>
-                <Navbar />
-                <Box>{children}</Box>
-              </>
-            </AuthProvider>
-          </ChakraProvider>
+          <AuthProvider>
+            <Providers>
+              <Navbar /> <Box>{children}</Box>
+            </Providers>
+          </AuthProvider>
         </TanStackProviders>
       </body>
     </html>

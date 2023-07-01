@@ -1,30 +1,19 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import { async } from "@firebase/util";
-import Link from "next/link";
+"use client";
+
+import { Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
 import ToggleThemeButton from "../components/ToggleTheme/ToggleTheme";
 import AuthContext from "../firebase/AuthProvider";
+import Link from "./Link/Link";
 
 const Navbar: React.FC = () => {
-  const { currentUser, login, logout } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
   const router = useRouter();
-  const handleLogout = () => {};
+
   const handleLogin = () => {
     router.push("/");
-  };
-
-  const customButtonStyle = {
-    backgroundColor: "starNight.medium",
-    color: "white",
-    borderRadius: "md",
-    _hover: {
-      backgroundColor: "starNight.light",
-    },
-    _active: {
-      backgroundColor: "teal.700",
-    },
   };
 
   return (
@@ -33,28 +22,23 @@ const Navbar: React.FC = () => {
       alignItems="center"
       padding="2%"
       margin="2%"
-      bg="starNight.dark"
     >
-      <Button sx={customButtonStyle}>
+      <Button>
         {" "}
-        <Link href="/">Home</Link>
+        <Link href="/"> Home </Link>
       </Button>
-      <Button sx={customButtonStyle}>
+      <Button>
         {" "}
         <Link href="./pages/galleries">Galleries</Link>
       </Button>
-      <Button sx={customButtonStyle}>
+      <Button>
         {" "}
         <Link href="./pages/contact">Contact</Link>
       </Button>{" "}
-      <Button sx={customButtonStyle}>
+      <Button>
         {" "}
         <Link href="./pages/about">About</Link>
       </Button>
-      {/*<Button sx={customButtonStyle}>
-        {" "}
-        <Link href="./pages/profile">Profile</Link>
-      </Button>*/}
       {currentUser ? (
         <Button bg="orange.500" onClick={logout}>
           {" "}

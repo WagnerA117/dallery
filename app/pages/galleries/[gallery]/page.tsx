@@ -11,7 +11,6 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
   Heading,
   Image,
   List,

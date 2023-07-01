@@ -1,6 +1,7 @@
-import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+
+//check recaptcha 3 f
 
 export async function POST(request: Request, response: NextResponse) {
   //this will be the node mail
