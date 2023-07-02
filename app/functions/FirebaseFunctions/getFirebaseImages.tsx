@@ -13,6 +13,7 @@ const getFirebaseImages = async (
   if (docSnap.exists()) {
     const document = docSnap.data();
     const userImages = document?.images?.filter(
+      //@ts-ignore
       (image) => image.galleryId === galleryId
     );
     return userImages;
