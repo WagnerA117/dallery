@@ -32,7 +32,6 @@ const addFirebaseGallery: CreateNewGalleryType = async (
 
     if (checkGalleryExists.exists()) {
       //logic for gallery goes here
-      console.log("gallery exists");
       //@ts-ignore
       const docRef = doc(db, "galleries", userId);
 

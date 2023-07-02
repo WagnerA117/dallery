@@ -12,6 +12,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { Formik, useFormik } from "formik";
 import React, { useEffect, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import useCustomToast from "../../customHooks/useCustomToast";
 
@@ -44,6 +45,8 @@ const ContactPage = () => {
   //the custom hook
   const { mutate: postContact } = usePostContact();
 
+  const reRef = React.useRef<ReCAPTCHA>(null);
+
   const showToast = useCustomToast();
 
   const formik = useFormik({
@@ -52,12 +55,12 @@ const ContactPage = () => {
       emailAddress: "",
       emailContent: "",
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (formik.values.emailContent.length > 0) {
         //3)call the custom hook
         postContact(values, {
           onSuccess: () => {
-            console.log("email sent"!);
+            console.log("email sent!");
             formik.resetForm();
             showToast("Email Sent!", "Thanks for getting in touch!", "success");
           },
@@ -120,6 +123,12 @@ const ContactPage = () => {
             value={formik.values.emailContent}
           />
         </FormControl>
+
+        <ReCAPTCHA
+          sitekey={process.env.NEXT_PUBLIC_TEST_CAPTCHA_KEY as string}
+          size="invisible"
+          ref={reRef}
+        />
 
         <Button
           type="submit"
