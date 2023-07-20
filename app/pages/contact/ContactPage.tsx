@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { Formik, useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import useCustomToast from "../../customHooks/useCustomToast";
@@ -20,32 +20,39 @@ interface EmailValuesType {
   name: string;
   emailAddress: string;
   emailContent: string;
+  token?: string;
 }
 
 //1) Create custom hook outside of body?
-const usePostContact = () => {
-  return useMutation({
-    mutationKey: ["contact"],
-    mutationFn: async (values: EmailValuesType) => {
-      const result = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      return result.json();
-    },
-  });
-};
 
 const ContactPage = () => {
   // 2) destructuring the values needed from
   //the custom hook
-  const { mutate: postContact } = usePostContact();
 
-  const reRef = React.useRef<ReCAPTCHA>(null);
+  const reRef = useRef<ReCAPTCHA>(null);
+
+  const usePostContact = () => {
+    return useMutation({
+      mutationKey: ["contact"],
+      mutationFn: async (values: EmailValuesType) => {
+        console.log("this ran");
+        const token = await reRef.current?.executeAsync();
+
+        reRef.current?.reset();
+
+        const result = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...values, token }),
+        });
+
+        return result.json();
+      },
+    });
+  };
+  const { mutate: postContact } = usePostContact();
 
   const showToast = useCustomToast();
 
@@ -125,7 +132,7 @@ const ContactPage = () => {
         </FormControl>
 
         <ReCAPTCHA
-          sitekey={process.env.NEXT_PUBLIC_TEST_CAPTCHA_KEY as string}
+          sitekey={process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY_V2 as string}
           size="invisible"
           ref={reRef}
         />
