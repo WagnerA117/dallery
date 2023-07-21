@@ -23,6 +23,8 @@ interface EmailValuesType {
   token?: string;
 }
 
+console.log(process.env.NEXT_PUBLIC_DEV_EMAIL);
+
 //1) Create custom hook outside of body?
 
 const ContactPage = () => {
@@ -35,7 +37,6 @@ const ContactPage = () => {
     return useMutation({
       mutationKey: ["contact"],
       mutationFn: async (values: EmailValuesType) => {
-        console.log("this ran");
         const token = await reRef.current?.executeAsync();
 
         reRef.current?.reset();
@@ -67,9 +68,16 @@ const ContactPage = () => {
         //3)call the custom hook
         postContact(values, {
           onSuccess: () => {
-            console.log("email sent!");
             formik.resetForm();
             showToast("Email Sent!", "Thanks for getting in touch!", "success");
+          },
+          onError: () => {
+            formik.resetForm();
+            showToast(
+              "Error",
+              "Something went wrong, please try again! ",
+              "error"
+            );
           },
         });
       } else console.log("no info");
