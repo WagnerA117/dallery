@@ -1,6 +1,4 @@
 import { extendTheme } from "@chakra-ui/react";
-import { ChakraProps } from "@chakra-ui/react";
-import { color } from "framer-motion";
 
 export const customTheme = extendTheme({
   colors: {
@@ -31,11 +29,11 @@ export const customTheme = extendTheme({
     },
   },
 
-  styles: {
-    global: (props: { colorMode: string }) => ({
-      body: {
-        bg: props.colorMode === "dark" ? "starNight.dark2" : "starNight.light",
-      },
-    }),
-  },
+  //styles: {
+  //  global: (props: { colorMode: string }) => ({
+  //    body: {
+  //      bg: props.colorMode === "dark" ? "starNight.dark2" : "starNight.light",
+  //    },
+  //  }),
+  //},
 });
