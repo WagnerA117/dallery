@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const GET = async (request: Request) => {
+export const POST = async (request: Request) => {
   try {
     const randomIndex = Math.floor(Math.random() * 10);
     const minPage = 1; // Minimum page number
@@ -14,6 +14,7 @@ export const GET = async (request: Request) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
         },
         body: JSON.stringify({
           query: {

@@ -12,7 +12,7 @@ const useRandomArtWork = () => {
     queryKey: ["randomArtwork"],
     queryFn: async () => {
       const result = await fetch("/api/randomArtwork", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Cache-Control": "no-cache",
@@ -75,7 +75,7 @@ const RandomArtWorks: React.FC = () => {
   };
 
   const handleClick = () => {
-    refetch();
+    fetchRandomArtwork();
   };
 
   if (isLoading || !randomArtwork) {
