@@ -7,9 +7,6 @@ const buttonStyle = {
   bg: " orange.400",
   padding: "4",
   margin: "4",
-  _hover: {
-    bg: "starNight.medium",
-  },
 };
 
 const SignInOptions = () => {
@@ -59,7 +56,6 @@ const SignInOptions = () => {
           alignItems="center"
           height="100vh"
           flexDir="column"
-          bg="starNight.dark"
           maxH="480"
           maxW="480"
           padding="2%"

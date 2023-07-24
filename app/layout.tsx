@@ -16,7 +16,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
         <TanStackProviders>
           <AuthProvider>
             <Providers>
-              <Navbar /> <Box>{children}</Box>
+              <Navbar /> <Box margin="2%">{children}</Box>
             </Providers>
           </AuthProvider>
         </TanStackProviders>

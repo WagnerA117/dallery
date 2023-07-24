@@ -94,7 +94,6 @@ const RandomArtWorks: React.FC = () => {
               isLoaded={!isLoading}
               maxH="70vh"
               minH="70vh"
-              bg="starNight.dark"
               width="100%"
               display="flex"
               justifyContent="center"
@@ -103,12 +102,7 @@ const RandomArtWorks: React.FC = () => {
               <LoadingSpinner />
             </Skeleton>
           ) : (
-            <Flex
-              direction="column"
-              alignItems="center"
-              bg={"starNight.dark"}
-              width="100%"
-            >
+            <Flex direction="column" alignItems="center" width="100%">
               <Image
                 maxH="70vh"
                 minH="70vh"

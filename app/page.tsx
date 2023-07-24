@@ -7,16 +7,7 @@ import RandomArtWorks from "./components/ArtWorkGenerator/RandomArtWorks";
 import SignInOptions from "./components/SignInOptions/SignInOptions";
 import AuthContext from "./firebase/AuthProvider";
 
-// protected routes you want for whole application
-// setting up a HOC
-// login/logout features
-//
-
-//change the button to show logged in o
-
 export default function Home() {
-  // User Authentication
-
   const { currentUser } = useContext(AuthContext);
 
   return (

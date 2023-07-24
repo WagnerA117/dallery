@@ -29,23 +29,23 @@ const Navbar: React.FC = () => {
       </Button>
       <Button>
         {" "}
-        <Link href="./galleries">Galleries</Link>
+        <Link href="/pages/galleries">Galleries</Link>
       </Button>
       <Button>
         {" "}
-        <Link href="./contact">Contact</Link>
+        <Link href="/pages/contact">Contact</Link>
       </Button>{" "}
       <Button>
         {" "}
-        <Link href="./about">About</Link>
+        <Link href="/pages/about">About</Link>
       </Button>
       {currentUser ? (
-        <Button bg="orange.500" onClick={logout}>
+        <Button bg="orange.500" color="white" onClick={logout}>
           {" "}
           Logout
         </Button>
       ) : (
-        <Button bg="orange.500" onClick={handleLogin}>
+        <Button bg="orange.500" color="white" onClick={handleLogin}>
           {" "}
           Login
         </Button>

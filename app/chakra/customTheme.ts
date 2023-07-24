@@ -1,4 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
+import { GlobalStyleProps } from "@chakra-ui/theme-tools";
 
 export const customTheme = extendTheme({
   colors: {
@@ -24,16 +25,11 @@ export const customTheme = extendTheme({
     Button: {
       baseStyle: {
         // Update the background color here
-        bg: "blue.500", // Example color (blue)
+        bg: "orange.400", // Example color (blue)
       },
     },
   },
-
-  //styles: {
-  //  global: (props: { colorMode: string }) => ({
-  //    body: {
-  //      bg: props.colorMode === "dark" ? "starNight.dark2" : "starNight.light",
-  //    },
-  //  }),
-  //},
+  styles: {
+    global: (props: GlobalStyleProps) => ({}),
+  },
 });

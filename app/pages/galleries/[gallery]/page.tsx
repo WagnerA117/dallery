@@ -36,6 +36,10 @@ import { storage } from "../../../firebase/clientApp";
 
 //@ts-nocheck
 
+//@ts-nocheck
+
+//@ts-nocheck
+
 //toDo in this folder
 //1. Update the types and fix the errors
 //2. Set a better naming convention for the images in the gallery
@@ -198,9 +202,7 @@ const Gallery: React.FC = () => {
             {isDragActive ? (
               <Text> Drop Em</Text>
             ) : (
-              <Button bg="starNight.hover" color="starNight.dark">
-                Drag files or Select Upload
-              </Button>
+              <Button>Drag files or Select Upload</Button>
             )}
           </Box>
         </Flex>
@@ -218,10 +220,7 @@ const Gallery: React.FC = () => {
                 {" "}
                 Cancel Upload
               </Button>
-              <Button onClick={saveSelected} backgroundColor="starNight.light">
-                {" "}
-                Save Images
-              </Button>
+              <Button onClick={saveSelected}> Save Images</Button>
             </Flex>
           ) : null}
         </Flex>

@@ -105,11 +105,7 @@ const CreateGallery: React.FC = () => {
   return (
     <>
       <Box width="100%" display="flex" justifyContent="center">
-        <Button
-          bg="starNight.medium"
-          _hover={{ backgroundColor: "starNight.light" }}
-          onClick={handleOpenModal}
-        >
+        <Button onClick={handleOpenModal}>
           <AddIcon /> Create Gallery
         </Button>
 
@@ -139,9 +135,7 @@ const CreateGallery: React.FC = () => {
                 </VStack>
               </ModalBody>
               <ModalFooter display="flex" justifyContent="space-between">
-                <Button onClick={createNewGallery} bg="starNight.medium">
-                  Create Gallery
-                </Button>
+                <Button onClick={createNewGallery}>Create Gallery</Button>
                 <Button onClick={handleCloseModal}>Cancel</Button>
               </ModalFooter>
             </ModalContent>
@@ -153,14 +147,13 @@ const CreateGallery: React.FC = () => {
         templateColumns="repeat(4, 1fr)"
         gap={6}
         border="10px"
-        borderColor="starNight.light"
         padding="1rem"
       >
         {galleries?.map((gallery) => (
           <Box key={gallery.id}>
             <Link
               href={{
-                pathname: `./pages/galleries/${gallery.id}`,
+                pathname: `/pages/galleries/${gallery.id}`,
                 query: { id: gallery.id },
               }}
             >

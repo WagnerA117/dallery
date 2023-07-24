@@ -3,7 +3,7 @@ import React from "react";
 
 const LoadingSpinner: React.FC = () => {
   return (
-    <Box display="flex" justifyContent="center" bg="starNight.Dark">
+    <Box display="flex" justifyContent="center">
       <Spinner />
     </Box>
   );
