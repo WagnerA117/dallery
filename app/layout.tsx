@@ -7,7 +7,7 @@ import { Providers } from "./chakra/ChakraProviders";
 import Navbar from "./components/NavBar";
 import { AuthProvider } from "./firebase/AuthProvider";
 //@ts-ignore //Todo: Check import ideas
-import TanStackProviders from "./utils/tanStackProviders";
+import TanStackProviders from "./utils/TanStackProviders";
 
 function RootLayout({ children }: { children: React.ReactNode }) {
   return (
