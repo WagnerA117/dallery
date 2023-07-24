@@ -40,6 +40,7 @@ const RandomArtWorks: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Cache-Control": "no-cache", // Disable caching of this request
         },
         body: JSON.stringify({
           query: {
