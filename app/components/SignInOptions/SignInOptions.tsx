@@ -82,24 +82,6 @@ const SignInOptions = () => {
             />{" "}
             Sign In with Gmail
           </Button>
-          {/* This is the password section  */}
-          {/*<Heading size="5">Or Sign in with email and password</Heading>*/}
-          {/*<Input
-            size="md"
-            placeholder="Email"
-            margin="2%"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          ></Input>
-          <Input
-            size="md"
-            placeholder="Password"
-            margin="2%"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          ></Input>*/}
         </Flex>
       </Box>
     </>
