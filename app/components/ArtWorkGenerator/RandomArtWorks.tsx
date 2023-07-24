@@ -15,7 +15,7 @@ const useRandomArtWork = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Cache-Control": "no-cache",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
         },
       });
 
