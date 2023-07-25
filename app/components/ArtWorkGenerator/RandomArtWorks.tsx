@@ -4,9 +4,6 @@ import React from "react";
 
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
-//Variables for this file
-const randomIndex = Math.floor(Math.random() * 10);
-
 const useRandomArtWork = () => {
   return useQuery({
     queryKey: ["randomArtwork"],
@@ -29,53 +26,8 @@ const RandomArtWorks: React.FC = () => {
 
   //This will chose a random painting out of the response of 10;
 
-  const fetchRandomArtwork = async () => {
-    const minPage = 1; // Minimum page number
-    const maxPage = 100; // Maximum page number
-    const randomNumber =
-      Math.floor(Math.random() * (maxPage - minPage + 1)) + minPage;
-
-    const request = await fetch(
-      `https://api.artic.edu/api/v1/artworks/search`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": "no-cache", // Disable caching of this request
-        },
-        body: JSON.stringify({
-          query: {
-            term: {
-              is_public_domain: true,
-            },
-          },
-          fields: [
-            "artist_display",
-            "artist_title",
-            "classification_id",
-            "classification_title",
-            "date_display",
-            "is_public_domain",
-            "id",
-            "image_id",
-            "style_title",
-            "style_id",
-            "subject",
-            "main_reference_number",
-            "title",
-          ],
-          page: randomNumber,
-        }),
-      }
-    );
-
-    const response = await request.json();
-
-    return response;
-  };
-
   const handleClick = () => {
-    fetchRandomArtwork();
+    refetch();
   };
 
   if (isLoading || !randomArtwork) {
