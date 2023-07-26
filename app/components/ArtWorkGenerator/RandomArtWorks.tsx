@@ -58,18 +58,21 @@ const RandomArtWorks: React.FC = () => {
           ) : (
             <Flex direction="column" alignItems="center" width="100%">
               <Image
-                maxH="70vh"
-                minH="70vh"
+                maxH="60vh"
+                minH="50vh"
                 src={imageUrl}
                 alt="this is the alt"
                 padding="2%"
                 objectFit={"contain"}
               />
+
+              <Button onClick={handleClick}>
+                Discover a Surpise Painting{" "}
+              </Button>
             </Flex>
           )}
         </Flex>
       </Box>
-      <Button onClick={handleClick}>Find a random artwork</Button>
     </>
   );
 };

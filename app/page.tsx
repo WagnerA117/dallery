@@ -1,9 +1,10 @@
 "use client";
 
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading } from "@chakra-ui/react";
 import { useContext } from "react";
 
 import RandomArtWorks from "./components/ArtWorkGenerator/RandomArtWorks";
+import Link from "./components/Link/Link";
 import SignInOptions from "./components/SignInOptions/SignInOptions";
 import AuthContext from "./firebase/AuthProvider";
 
@@ -13,10 +14,15 @@ export default function Home() {
   return (
     <>
       {currentUser ? (
-        <Box>
+        <Box height="50%">
           {" "}
-          <Heading textAlign="center" width="100%" margin="2%">
-            Welcome to Dallery
+          <Heading textAlign="center" margin="2%">
+            Welcome to Dallery, {currentUser.displayName}! Create your own
+            gallery{" "}
+            <Button variant="outline">
+              {" "}
+              <Link href="/pages/galleries">Here</Link>
+            </Button>
           </Heading>
           <RandomArtWorks />
         </Box>

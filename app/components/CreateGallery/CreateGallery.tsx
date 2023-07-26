@@ -106,7 +106,7 @@ const CreateGallery: React.FC = () => {
     <>
       <Box width="100%" display="flex" justifyContent="center">
         <Button onClick={handleOpenModal}>
-          <AddIcon /> Create Gallery
+          <AddIcon margin={1} /> Create Gallery
         </Button>
 
         <Box>
