@@ -1,25 +1,30 @@
 "use client";
 
-import { auth, db } from "@/app/firebase/clientApp ";
-import { Flex, Heading } from "@chakra-ui/react";
-import { Button, Input } from "@chakra-ui/react";
-import { arrayUnion, setDoc, updateDoc } from "firebase/firestore";
-import { addDoc, collection, doc, getDoc } from "firebase/firestore";
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { v4 } from "uuid";
+import { Flex, Heading, Link } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 
 const AboutPage = () => {
-  const [text, setText] = useState("");
-  const [about, setAbout] = useState("");
-  //ideas include an about the idea of project
-
-  //
-
   return (
     <>
-      <Flex justifyContent="center">
-        <Heading>This will be the about page</Heading>
+      <Flex direction="column">
+        <Heading margin="2%">
+          Dallery is build with Next.js, TypeScript and Firebase and deploying
+          via Vercel.
+        </Heading>
+
+        <Heading margin="2%">
+          Dallery is a spot to curate and collect images, in my case it was to
+          eventually serve as a digital catalogue of the many doodles and
+          snippets I've collected over the years.
+        </Heading>
+
+        <Heading margin="2%">
+          I'd love to hear from you! Please get in contact with me{" "}
+          <Button variant="outline">
+            {" "}
+            <Link href="/pages/contact">Here</Link>
+          </Button>
+        </Heading>
       </Flex>
     </>
   );

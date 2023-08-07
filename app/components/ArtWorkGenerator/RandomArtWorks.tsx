@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Image, Skeleton } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  Link,
+  Skeleton,
+  background,
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
@@ -39,6 +47,17 @@ const RandomArtWorks: React.FC = () => {
 
   const imageUrl = `https://www.artic.edu/iiif/2/${randomArtwork["image_id"]}/full/843,/0/default.jpg`;
 
+  const learnMoreUrl = `https://www.artic.edu/artworks/${randomArtwork["id"]}`;
+
+  const handleLearnMore = () => {
+    <Button variant="outline">
+      {" "}
+      <Link href={learnMoreUrl}>Here</Link>
+    </Button>;
+  };
+
+  console.log("randomArtwork", randomArtwork);
+
   return (
     <>
       <Box>
@@ -66,9 +85,12 @@ const RandomArtWorks: React.FC = () => {
                 objectFit={"contain"}
               />
 
-              <Button onClick={handleClick}>
-                Discover a Surpise Painting{" "}
-              </Button>
+              <Link target="_blank" href={learnMoreUrl}>
+                <Button margin="2%" onClick={handleLearnMore}>
+                  Explore this Artwork!
+                </Button>
+              </Link>
+              <Button onClick={handleClick}>Find a Random Artwork</Button>
             </Flex>
           )}
         </Flex>
