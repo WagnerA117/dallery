@@ -30,7 +30,12 @@ const useRandomArtWork = () => {
 };
 
 const RandomArtWorks: React.FC = () => {
-  const { data: randomArtwork, refetch, isLoading } = useRandomArtWork();
+  const {
+    data: randomArtwork,
+    refetch,
+    isLoading,
+    isFetching,
+  } = useRandomArtWork();
 
   //This will chose a random painting out of the response of 10;
 
